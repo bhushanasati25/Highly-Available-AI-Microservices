@@ -41,7 +41,7 @@
 
 This platform implements an enterprise AI microservices backend supporting concurrent training data workloads:
 1. **Distributed C++ and Python Microservices**: High-throughput C++17 services utilizing gRPC HTTP/2 chunk streaming, CRC32 binary verification, and consistent-hash virtual node sharding, coupled with asynchronous Python FastAPI services for AI job orchestration, semantic model versioning, and telemetry.
-2. **Targeted Automated Testing Suites**: 38 automated unit, integration, and contract test suites verifying distributed system invariants, circuit breakers, and edge cases prior to cloud infrastructure deployment.
+2. **Targeted Automated Testing Suites**: 52 automated unit, integration, and contract test suites (28 Python + 4 E2E Integration + 20 Native C++17) verifying distributed system invariants, circuit breakers, and edge cases prior to cloud infrastructure deployment.
 3. **Automated Workload Rescheduling Mechanisms**: Mitigates hardware failure impacts across a simulated **50-node heterogeneous distributed environment** leveraging the **$\Phi$ Accrual Failure Detector** ($\Phi \ge 8.0$) to automatically detect dropped heartbeats, evict orphaned workloads, and dynamically rebalance jobs with priority preemption.
 4. **Streamlined Robust CI/CD Release Lifecycle**: Standard Linux toolchains (CMake, Clang/GCC, Docker Buildx, Helm, Kubectl) orchestrated via GitHub Actions CI/CD and Infrastructure-as-Code (Terraform) targeting Microsoft Azure AKS.
 
@@ -314,8 +314,9 @@ flowchart LR
 
     subgraph CI["GitHub Actions: Continuous Integration (.github/workflows/ci.yml)"]
         LINT["Static Analysis\n• Clang-Format (C++)\n• Ruff (Python)"]
-        TEST_CPP["C++17 Test Suite\n• 16 Unit Tests\n• Clang++ Native Runner"]
-        TEST_PY["Python Test Suite\n• 22 Unit & Integration Tests\n• Code Coverage (XML)"]
+        TEST_CPP["C++17 Test Suite\n• 20 Native Unit Tests\n• Clang++ Native Runner"]
+        TEST_PY["Python Test Suite\n• 28 Unit Tests\n• 4 E2E Integration Tests\n• Code Coverage (XML)"]
+        PROFILER["Inference SLA Profiler\n• Latency Distribution (p50-p99)\n• SLA Verification (p99 < 50ms)"]
         BUILD["Docker Multi-Stage Build\n• Parallel Buildx\n• Cache Mounts"]
     end
 
@@ -336,7 +337,8 @@ flowchart LR
     LINT --> TEST_CPP
     LINT --> TEST_PY
     TEST_CPP --> BUILD
-    TEST_PY --> BUILD
+    TEST_PY --> PROFILER
+    PROFILER --> BUILD
     BUILD --> CD
     CD --> IAC
     IAC --> HELM_LINT
@@ -538,6 +540,32 @@ To maximize resiliency under Azure Kubernetes Service (AKS) orchestration, every
 2. **Readiness Probe (`/readyz`):** Verifies downstream dependencies (consistent hash ring, compute nodes, model registry) are fully operational. If failing, the pod is dynamically removed from Azure Application Gateway ingress endpoints.
 3. **Startup Probe (`/startupz`):** Accommodates heavy AI model loading and initialization routines, preventing aggressive liveness terminations during container cold starts.
 
+```mermaid
+stateDiagram-v2
+    [*] --> StartupPhase : Container Launch
+
+    state StartupPhase {
+        [*] --> Warmup : Initialize Runtime & Weights Cache
+        Warmup --> ProbingStartup : Query /startupz
+        ProbingStartup --> Warmup : HTTP 503 (Cold Start Ongoing)
+        ProbingStartup --> StartupComplete : HTTP 200 (Initialized)
+    }
+
+    StartupPhase --> OperationalPhase : Startup Succeeded
+
+    state OperationalPhase {
+        state "Readiness Probe (/readyz)" as ReadyCheck
+        state "Liveness Probe (/healthz)" as LiveCheck
+
+        ReadyCheck --> ActiveTraffic : HTTP 200 (Healthy ➔ Route Ingress Traffic)
+        ReadyCheck --> Throttled : HTTP 503 (Saturated ➔ Evict from Ingress Pool)
+        Throttled --> ActiveTraffic : Capacity Recovered (HTTP 200)
+
+        LiveCheck --> LoopAlive : HTTP 200 (Event Loop Healthy)
+        LiveCheck --> DeadlockRestart : HTTP 503 (Deadlock Detected ➔ Kubelet Pod Restart)
+    }
+```
+
 ---
 
 ## 13. High-Throughput AI Inference Latency Profiler
@@ -587,7 +615,81 @@ Batch    | p50 (ms)   | p90 (ms)   | p95 (ms)   | p99 (ms)   | Throughput (inf/s
 | **`training-orchestrator`** | Python 3.11, FastAPI | HTTP, RabbitMQ | Priority preemption queue, least-loaded compute node balancer, DAG engine | `8084` (HTTP), `8084/metrics` |
 | **`model-manager`** | Python 3.11, FastAPI | HTTP | Model registry, semantic versioning (`v1.0.0`), SHA-256 CAS deduplication, lineage tracking | `8085` (HTTP), `8085/metrics` |
 | **`monitoring`** | Python 3.11, Prometheus | HTTP | 5s TTL node heartbeat tracker, consecutive failure alerts, data drift (PSI & KS-test) | `8086` (HTTP), `8086/metrics` |
-| **`scheduler`** | Python 3.11, FastAPI | HTTP | 50-node cluster manager, $\Phi$ Accrual Failure Detector, automated failover engine | `8087` (HTTP), `8087/metrics` |
+| **`scheduler`** | Python 3.11, FastAPI | HTTP | 50-node cluster manager, $\Phi$ Accrual Failure Detector, DLQ quarantine, automated failover | `8087` (HTTP), `8087/metrics` |
+
+### Complete Service API Endpoint Catalog
+
+#### 1. API Gateway (`:8080`)
+* `POST /api/v1/auth/token`: Issues signed JWT Bearer tokens with role-based claims (`admin`, `developer`).
+* `POST /api/v1/ingest`: Ingests multi-format datasets with streaming CRC32 validation (Returns `202 Accepted`).
+* `GET /api/v1/ingest/{job_id}`: Retrieves asynchronous ingestion processing status.
+* `POST /api/v1/training/jobs`: Submits distributed AI training workloads with GPU/CPU quotas.
+* `GET /api/v1/training/jobs`: Lists active and completed training jobs.
+* `GET /api/v1/training/jobs/{job_id}`: Polls training progress, loss/accuracy metrics, and node assignment.
+* `POST /api/v1/models/register`: Registers trained model weights with SHA-256 CAS content hashing.
+* `GET /api/v1/models`: Catalogs all registered models and version histories.
+* `GET /api/v1/models/{model_id}`: Retrieves complete lineage graph (Dataset $\rightarrow$ Pipeline $\rightarrow$ Model).
+* `POST /api/v1/models/{model_id}/promote`: Promotes model artifact stage (`staging` $\rightarrow$ `production` $\rightarrow$ `archived`).
+* `GET /dashboard`: Interactive dark-mode operations mission control dashboard (HTML5).
+* `GET /metrics`: Aggregated Prometheus telemetry metrics exporter.
+* `GET /healthz`, `/readyz`, `/startupz`: Cloud-native 3-tier Kubernetes probes.
+
+#### 2. C++17 Data Ingestion Service (`:8081`, `:50051`)
+* `gRPC IngestDataStream(ChunkPayload)`: High-throughput binary chunk streaming ($64\,\text{KB}$ buffers).
+* `CRC32 Integrity Verifier`: Binary polynomial checksum validation over raw data buffers.
+* `Magic Byte Inspector`: Validates header signatures (`PAR1` for Parquet, RFC 4180 for CSV, RFC 8259 for JSON).
+
+#### 3. C++17 Preprocessing Service (`:8082`, `:50052`)
+* `gRPC ProcessFeatures(FeatureVector)`: High-performance mathematical transformations:
+  * **MinMax Normalization:** Rescales feature dimensions to $[0.0, 1.0]$.
+  * **Z-Score Standardization:** Transforms distributions to zero mean ($\mu = 0$) and unit variance ($\sigma = 1$).
+  * **Missing Value Imputation:** Statistical mean/median replacement for sparse sparse vectors.
+  * **PCA & Feature Hashing:** Dimensionality reduction and MurmurHash3 feature indexing.
+
+#### 4. C++17 Storage Manager & Consensus (`:8083`, `:50053`)
+* `gRPC PutObject(Key, Payload, Quorum)`: FNV-1a consistent hash ring lookup and quorum consensus write ($W=2, N=3$).
+* `gRPC GetObject(Key)`: Quorum consensus read ($R=2$) with replica reconciliation.
+* `gRPC DeleteObject(Key)`: Quorum tombstone write and replica deletion.
+* `Write-Ahead Log (WAL)`: Synchronous append-only log providing crash-recovery durability.
+
+#### 5. Training Orchestrator (`:8084`)
+* `POST /jobs`: Enqueues AI training DAG with priority preemption (1 = Low, 10 = Critical).
+* `GET /jobs`: Retrieves the global job queue status.
+* `GET /jobs/{job_id}`: Inspects assigned compute node and live loss/accuracy telemetry.
+* `GET /nodes`: Queries available compute nodes, VRAM headroom, and GPU allocations.
+
+#### 6. Model Manager (`:8085`)
+* `POST /models`: Registers new model metadata with SHA-256 Content-Addressable Storage (CAS).
+* `GET /models`: Returns full model catalog with semantic versions (`v1.0.0`).
+* `GET /models/{model_id}`: Returns artifact download URLs and cryptographic lineage records.
+* `POST /models/{model_id}/promote`: Manages lifecycle promotion between environments.
+
+#### 7. Monitoring & Data Drift Detector (`:8086`)
+* `POST /heartbeat`: Records node health pulses with 5-second TTL sliding expiration.
+* `GET /cluster/status`: Aggregated cluster health with consecutive failure alerting.
+* `POST /drift/evaluate`: Evaluates dataset covariate shift:
+  * **Population Stability Index (PSI):** Quantifies distribution divergence ($PSI > 0.25 \rightarrow \text{Significant Drift}$).
+  * **Two-Sample Kolmogorov-Smirnov (KS) Test:** Non-parametric statistical distribution comparison.
+* `GET /metrics`: Standard Prometheus metrics scrape target.
+
+#### 8. 50-Node Rescheduler & Cluster Manager (`:8087`)
+* `POST /api/v1/workloads`: Schedules workload on optimal node (Least-Loaded, Round-Robin, Spread).
+* `GET /api/v1/workloads`: Lists workloads with status filters (`PENDING`, `SCHEDULED`, `RUNNING`, `QUARANTINED`).
+* `GET /api/v1/workloads/{id}`: Detailed workload execution status.
+* `POST /api/v1/workloads/{id}/reschedule`: Operator-triggered manual task rescheduling.
+* `DELETE /api/v1/workloads/{id}`: Cancels workload and releases allocated vCPUs/RAM/GPUs.
+* `GET /api/v1/cluster/status`: Real-time 50-node cluster capacity, core utilization, and RAM availability.
+* `GET /api/v1/cluster/nodes`: Lists all 50 heterogeneous nodes (GPU, High-Mem, Standard, Edge).
+* `POST /api/v1/cluster/nodes/{id}/drain`: Cordon and drain node, automatically migrating workloads.
+* `POST /api/v1/cluster/nodes/{id}/maintenance`: Transitions node to maintenance mode.
+* `POST /api/v1/cluster/nodes/{id}/activate`: Re-activates node and registers heartbeats.
+* `POST /api/v1/simulate/failure`: Injects hardware fault, tripping $\Phi$ Accrual ($\Phi \ge 8.0$).
+* `POST /api/v1/simulate/recovery/{id}`: Simulates physical hardware recovery and node restoration.
+* `GET /api/v1/dlq`: Lists all poisoned workloads quarantined in the Dead-Letter Queue.
+* `GET /api/v1/dlq/{id}`: Retrieves forensic failure history and node attempt logs for quarantined task.
+* `POST /api/v1/dlq/{id}/replay`: Safely replays remediated task from DLQ back into the scheduler.
+* `DELETE /api/v1/dlq/{id}`: Permanently purges bad workload from DLQ storage.
+* `GET /api/v1/metrics`: Scheduler metrics: total scheduled, rescheduled, and DLQ quarantine counts.
 
 ---
 
