@@ -12,7 +12,7 @@ jobs:
   trivy-scan:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Build local container image
         run: docker build -t hams/api-gateway:scan -f services/api-gateway/Dockerfile .
       - name: Run Trivy vulnerability scanner
@@ -28,7 +28,7 @@ jobs:
   dependency-audit:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
@@ -42,7 +42,7 @@ jobs:
   secret-scan:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - name: Run Gitleaks Secret Scanner
