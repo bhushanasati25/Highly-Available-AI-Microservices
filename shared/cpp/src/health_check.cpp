@@ -203,7 +203,6 @@ void HealthChecker::runHttpServer(uint16_t port) {
             if (req.rfind("GET /healthz", 0) == 0 || req.rfind("GET /readyz", 0) == 0 ||
                 req.rfind("GET /startupz", 0) == 0 || req.rfind("GET /health", 0) == 0 ||
                 req.rfind("GET /ready", 0) == 0 || req.rfind("GET / ", 0) == 0) {
-                int code = is_healthy ? 200 : 503;
                 std::string status_line = is_healthy ? "200 OK" : "503 Service Unavailable";
                 response << "HTTP/1.1 " << status_line << "\r\n"
                          << "Content-Type: application/json\r\n"

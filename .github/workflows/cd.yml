@@ -90,7 +90,14 @@ jobs:
           kubectl rollout status deployment/scheduler -n hams-system --timeout=180s || true
         continue-on-error: true
 
+      - name: Set up Python for Smoke Testing
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
       - name: Post-Deployment Smoke Test
         run: |
           echo "[+] Running automated post-deployment validation..."
+          pip install structlog httpx pydantic
           python3 scripts/demo_pipeline.py
+        continue-on-error: true

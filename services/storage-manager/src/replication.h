@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <mutex>
 #include <chrono>
+#include <memory>
 
 #include "shard_manager.h"
 

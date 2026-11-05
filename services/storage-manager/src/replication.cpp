@@ -1,5 +1,7 @@
 #include "replication.h"
 
+#include <algorithm>
+#include <memory>
 #include <spdlog/spdlog.h>
 
 namespace hams {
