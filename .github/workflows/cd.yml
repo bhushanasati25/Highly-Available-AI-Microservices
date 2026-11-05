@@ -57,7 +57,7 @@ jobs:
         continue-on-error: true
 
       - name: Set AKS Context
-        uses: azure/aks-set-context@v3
+        uses: azure/aks-set-context@v5
         with:
           resource-group: ${{ secrets.AZURE_RESOURCE_GROUP || 'hams-prod-rg' }}
           cluster-name: ${{ secrets.AZURE_AKS_CLUSTER || 'hams-aks-cluster' }}
