@@ -1,14 +1,14 @@
-# Microsoft Technical Interview Masterclass: Highly Available AI Microservices (HAMS)
-> **Candidate Preparation Guide & System Deep-Dive**  
+# Enterprise Distributed Systems Architecture & Interview Preparation Guide
+> **Technical Interview Masterclass & System Deep-Dive: Highly Available AI Microservices (HAMS)**  
 > **Author:** Bhushan Asati  
 > **Project Repository:** [`https://github.com/bhushanasati25/Highly-Available-AI-Microservices`](https://github.com/bhushanasati25/Highly-Available-AI-Microservices)  
-> **Target Roles:** Software Engineer / Senior Software Engineer — Distributed Systems, Cloud Infrastructure (Azure), AI Platform & SRE.
+> **Target Roles:** Staff / Principal / Senior Software Engineer — Distributed Systems, Cloud Infrastructure, AI Platform & SRE.
 
 ---
 
 ## Table of Contents
 1. [Executive Elevator Pitches (30s, 2-Min, 5-Min)](#1-executive-elevator-pitches)
-2. [Microsoft Azure Architectural Alignment & Pillars](#2-microsoft-azure-architectural-alignment--pillars)
+2. [Cloud Architectural Alignment & Well-Architected Framework](#2-cloud-architectural-alignment--well-architected-framework)
 3. [Whiteboard System Architecture Walkthrough](#3-whiteboard-system-architecture-walkthrough)
 4. [Polyglot Engineering Decisions: C++17 vs. Python 3.11](#4-polyglot-engineering-decisions-c17-vs-python-311)
 5. [Core Distributed Systems Algorithms & Mathematical Derivations](#5-core-distributed-systems-algorithms--mathematical-derivations)
@@ -22,10 +22,10 @@
    - [6.3 3-State Distributed Circuit Breaker](#63-3-state-distributed-circuit-breaker)
    - [6.4 W3C Distributed Context Tracing (`traceparent`)](#64-w3c-distributed-context-tracing-traceparent)
    - [6.5 Cloud-Native 3-Tier Kubernetes Probes Lifecycle](#65-cloud-native-3-tier-kubernetes-probes-lifecycle)
-7. [Microsoft Azure AKS Cloud-Native Infrastructure & IaC](#7-microsoft-azure-aks-cloud-native-infrastructure--iac)
+7. [Cloud-Native Azure AKS Infrastructure & IaC](#7-cloud-native-azure-aks-infrastructure--iac)
 8. [The 8 Microservices Complete Technical Catalog](#8-the-8-microservices-complete-technical-catalog)
 9. [Quantitative Benchmarks & Operational Metrics (Numbers to Memorize)](#9-quantitative-benchmarks--operational-metrics-numbers-to-memorize)
-10. [Top 20 Microsoft System Design & Technical Interview Questions & Answers](#10-top-20-microsoft-system-design--technical-interview-questions--answers)
+10. [Top 20 Senior System Design & Technical Interview Questions & Answers](#10-top-20-senior-system-design--technical-interview-questions--answers)
 11. [STAR Method Behavioral & Technical Leadership Stories](#11-star-method-behavioral--technical-leadership-stories)
 12. [Live Terminal Demonstration Runbook](#12-live-terminal-demonstration-runbook)
 
@@ -59,9 +59,9 @@ Use this when the interviewer asks: *"Take 5 minutes and give me the end-to-end 
 
 ---
 
-## 2. Microsoft Azure Architectural Alignment & Pillars
+## 2. Cloud Architectural Alignment & Well-Architected Framework
 
-When interviewing at Microsoft, framing your engineering decisions around the **Microsoft Azure Well-Architected Framework** demonstrates senior cloud engineering maturity:
+When discussing cloud reliability and enterprise infrastructure, framing architectural decisions around the **Cloud Well-Architected Framework** demonstrates senior engineering maturity:
 
 | Azure Pillar | Architectural Implementation in HAMS | Microsoft Azure Cloud Equivalent |
 |---|---|---|
@@ -133,7 +133,7 @@ When asked to whiteboard HAMS, draw the system in **5 structured layers**:
 
 ## 4. Polyglot Engineering Decisions: C++17 vs. Python 3.11
 
-A classic Microsoft interview question is: *"Why did you split the system into C++17 and Python? Why not write everything in Go, Rust, or pure C++?"*
+A classic distributed systems interview question is: *"Why did you split the system into C++17 and Python? Why not write everything in Go, Rust, or pure C++?"*
 
 ### The Engineering Justification Matrix
 | Criteria | C++17 Implementation | Python 3.11 FastAPI Implementation | Why Not Go or Rust? |
@@ -347,7 +347,7 @@ The production infrastructure is declared cleanly in Terraform (`infra/terraform
 
 ## 9. Quantitative Benchmarks & Operational Metrics (Numbers to Memorize)
 
-During your Microsoft interview, quoting exact benchmarks separates candidates who talk theory from candidates who build production systems:
+During technical architecture interviews, quoting exact benchmarks separates candidates who talk theory from candidates who build production systems:
 
 ### 1. High-Throughput AI Inference Latency Scorecard (Model: `transformer-llm-7b`, SLA Target: $50\,\text{ms}$)
 | Batch Size | \(p50\) Latency (ms) | \(p90\) Latency (ms) | \(p95\) Latency (ms) | \(p99\) Latency (ms) | Inference Throughput | SLA Compliance |
@@ -372,7 +372,7 @@ During your Microsoft interview, quoting exact benchmarks separates candidates w
 
 ---
 
-## 10. Top 20 Microsoft System Design & Technical Interview Questions & Answers
+## 10. Top 20 Senior System Design & Technical Interview Questions & Answers
 
 ### Q1: "Why choose C++17 and Python together instead of a single language like Go?"
 > **Model Answer:**  
@@ -543,7 +543,7 @@ During your Microsoft interview, quoting exact benchmarks separates candidates w
 
 ## 11. STAR Method Behavioral & Technical Leadership Stories
 
-Use the **STAR (Situation, Task, Action, Result)** method for Microsoft behavioral and architectural experience questions.
+Use the **STAR (Situation, Task, Action, Result)** method for technical leadership and architectural experience questions.
 
 ### Story 1: Mitigating Cascading Failures Under High Cloud Network Jitter
 - **Situation:** During stress testing of our distributed training data pipeline across simulated cloud nodes, standard heartbeat timeout monitors were intermittently misdiagnosing normal packet jitter as node crashes.
@@ -571,7 +571,7 @@ Use the **STAR (Situation, Task, Action, Result)** method for Microsoft behavior
 
 ## 12. Live Terminal Demonstration Runbook
 
-If asked to share your screen or demonstrate the running system during your Microsoft interview, execute these commands with confidence:
+If asked to share your screen or demonstrate the running system during a live technical discussion, execute these commands with confidence:
 
 ```bash
 # 1. Run the entire 52-suite automated test suite (Python + C++ Native + Integration)
@@ -596,4 +596,4 @@ make demo
 
 ---
 
-*Good luck with your Microsoft interview! You have built a production-grade, mathematically verified, cloud-native distributed platform. Explain your architecture with conviction, articulate your tradeoffs, and anchor your answers in your quantitative metrics.*
+*You have built a production-grade, mathematically verified, cloud-native distributed platform. Explain your architecture with conviction, articulate your tradeoffs, and anchor your answers in your quantitative metrics.*
