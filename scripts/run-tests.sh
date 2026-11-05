@@ -41,7 +41,7 @@ fi
 echo ""
 if [ $FAILED_SUITES -eq 0 ]; then
     echo "=========================================================="
-    echo "[+] ALL 38 AUTOMATED TEST SUITES PASSED FLAWLESSLY!"
+    echo "[+] ALL 52 AUTOMATED TEST SUITES PASSED FLAWLESSLY!"
     echo "=========================================================="
     exit 0
 else

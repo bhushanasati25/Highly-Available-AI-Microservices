@@ -143,6 +143,20 @@
             "method": "POST",
             "url": "http://localhost:8087/api/v1/simulate/recovery/node-005"
           }
+        },
+        {
+          "name": "List Quarantined DLQ Workloads",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8087/api/v1/dlq"
+          }
+        },
+        {
+          "name": "Replay Quarantined Workload",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:8087/api/v1/dlq/wkl-sample/replay"
+          }
         }
       ]
     },
@@ -154,6 +168,27 @@
           "request": {
             "method": "GET",
             "url": "http://localhost:8080/api/v1/system/health"
+          }
+        },
+        {
+          "name": "Kubernetes Liveness Probe",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/healthz"
+          }
+        },
+        {
+          "name": "Kubernetes Readiness Probe",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/readyz"
+          }
+        },
+        {
+          "name": "Kubernetes Startup Probe",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/startupz"
           }
         },
         {

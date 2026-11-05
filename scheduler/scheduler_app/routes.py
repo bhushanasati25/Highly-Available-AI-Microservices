@@ -78,6 +78,32 @@ async def cancel_workload(workload_id: str):
         raise HTTPException(status_code=404, detail="Workload not found")
     return None
 
+# Dead-Letter Queue (DLQ) & Quarantine Management
+@router.get("/dlq", tags=["Dead-Letter Queue (DLQ)"])
+async def list_dlq_workloads():
+    return workload_sched.dlq.list_all()
+
+@router.get("/dlq/{workload_id}", tags=["Dead-Letter Queue (DLQ)"])
+async def get_dlq_workload(workload_id: str):
+    item = workload_sched.dlq.get(workload_id)
+    if not item:
+        raise HTTPException(status_code=404, detail="Quarantined workload not found in DLQ")
+    return item.to_dict()
+
+@router.post("/dlq/{workload_id}/replay", tags=["Dead-Letter Queue (DLQ)"])
+async def replay_dlq_workload(workload_id: str):
+    wkl = await workload_sched.replay_quarantined(workload_id)
+    if not wkl:
+        raise HTTPException(status_code=404, detail="Workload not found in DLQ or cannot be replayed")
+    return {"message": "Workload successfully replayed from DLQ", "workload": wkl.to_dict()}
+
+@router.delete("/dlq/{workload_id}", status_code=status.HTTP_204_NO_CONTENT, tags=["Dead-Letter Queue (DLQ)"])
+async def purge_dlq_workload(workload_id: str):
+    removed = workload_sched.dlq.remove(workload_id)
+    if not removed:
+        raise HTTPException(status_code=404, detail="Workload not found in DLQ")
+    return None
+
 @router.get("/cluster/status")
 async def cluster_status():
     nodes = list(node_mgr.nodes.values())
@@ -108,6 +134,7 @@ async def cluster_status():
         "available_gpu": avail_gpu,
         "total_scheduled_workloads": workload_sched.total_scheduled_count,
         "total_rescheduled_workloads": workload_sched.total_rescheduled_count,
+        "dlq_quarantined_workloads": workload_sched.dlq.count(),
     }
 
 @router.get("/cluster/nodes")
@@ -168,6 +195,7 @@ async def get_scheduler_metrics():
     return {
         "scheduled_count": workload_sched.total_scheduled_count,
         "rescheduled_count": workload_sched.total_rescheduled_count,
+        "dlq_quarantined_count": workload_sched.dlq.count(),
         "failure_events_count": len(fail_detector.failure_events),
         "degraded_mode": fail_detector.degraded_mode,
     }

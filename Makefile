@@ -1,4 +1,4 @@
-.PHONY: all build up down logs restart clean test test-cpp test-python test-integration benchmark chaos lint proto health status demo cli dashboard data deploy-aks
+.PHONY: all build up down logs restart clean test test-cpp test-python test-integration benchmark chaos profile lint proto health status demo cli dashboard data deploy-aks
 
 all: build
 
@@ -13,6 +13,9 @@ benchmark:
 
 chaos:
 	python3 scripts/chaos_simulation.py
+
+profile:
+	python3 scripts/profile_inference_latency.py --iterations 50
 
 dashboard:
 	@echo "Opening Operations Mission Control Dashboard..."

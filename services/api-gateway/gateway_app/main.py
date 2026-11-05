@@ -24,6 +24,7 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../shared/python")))
 from common.health import HealthChecker, create_health_router
+from common.tracing import W3CTracingMiddleware
 
 logger = structlog.get_logger(__name__)
 
@@ -55,6 +56,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# W3C Distributed Context Tracing
+app.add_middleware(W3CTracingMiddleware)
 
 # Custom Middlewares
 app.middleware("http")(request_logger_middleware)

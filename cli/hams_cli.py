@@ -92,7 +92,7 @@ async def cmd_simulate_failure(args):
     
     print(f"\n[!] Simulating hardware failure on node: {node_id}")
     res = await detector.simulate_node_failure(node_id)
-    print(f"[+] Node Status: Marked FAILED")
+    print("[+] Node Status: Marked FAILED")
     print(f"[+] Affected Workloads: {res['orphaned_count']}")
     print(f"[+] Automated Rescheduled: {res['rescheduled_count']}")
     if res['rescheduled_ids']:

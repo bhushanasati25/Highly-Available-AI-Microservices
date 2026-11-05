@@ -1,0 +1,124 @@
+{
+  "timestamp": 1793920741.740652,
+  "model": "transformer-llm-7b",
+  "sla_target_ms": 50.0,
+  "peak_throughput_inf_sec": 42689.3,
+  "optimal_batch_size": 128,
+  "all_compliant": true,
+  "benchmarks": [
+    {
+      "batch_size": 1,
+      "iterations": 50,
+      "total_inferences": 50,
+      "duration_sec": 0.027,
+      "inferences_per_sec": 1878.0,
+      "batches_per_sec": 1878.0,
+      "percentiles_ms": {
+        "min": 0.46,
+        "p50": 0.53,
+        "p90": 0.54,
+        "p95": 0.55,
+        "p99": 0.56,
+        "max": 0.57
+      },
+      "sla_target_ms": 50.0,
+      "sla_compliant": true,
+      "sla_violation_pct": 0.0
+    },
+    {
+      "batch_size": 8,
+      "iterations": 50,
+      "total_inferences": 400,
+      "duration_sec": 0.046,
+      "inferences_per_sec": 8759.3,
+      "batches_per_sec": 1094.9,
+      "percentiles_ms": {
+        "min": 0.88,
+        "p50": 0.91,
+        "p90": 0.93,
+        "p95": 0.93,
+        "p99": 0.94,
+        "max": 0.94
+      },
+      "sla_target_ms": 50.0,
+      "sla_compliant": true,
+      "sla_violation_pct": 0.0
+    },
+    {
+      "batch_size": 16,
+      "iterations": 50,
+      "total_inferences": 800,
+      "duration_sec": 0.055,
+      "inferences_per_sec": 14485.4,
+      "batches_per_sec": 905.3,
+      "percentiles_ms": {
+        "min": 1.06,
+        "p50": 1.1,
+        "p90": 1.12,
+        "p95": 1.13,
+        "p99": 1.14,
+        "max": 1.15
+      },
+      "sla_target_ms": 50.0,
+      "sla_compliant": true,
+      "sla_violation_pct": 0.0
+    },
+    {
+      "batch_size": 32,
+      "iterations": 50,
+      "total_inferences": 1600,
+      "duration_sec": 0.07,
+      "inferences_per_sec": 22737.6,
+      "batches_per_sec": 710.5,
+      "percentiles_ms": {
+        "min": 1.23,
+        "p50": 1.4,
+        "p90": 1.44,
+        "p95": 1.45,
+        "p99": 1.46,
+        "max": 1.46
+      },
+      "sla_target_ms": 50.0,
+      "sla_compliant": true,
+      "sla_violation_pct": 0.0
+    },
+    {
+      "batch_size": 64,
+      "iterations": 50,
+      "total_inferences": 3200,
+      "duration_sec": 0.101,
+      "inferences_per_sec": 31671.4,
+      "batches_per_sec": 494.9,
+      "percentiles_ms": {
+        "min": 1.94,
+        "p50": 1.98,
+        "p90": 2.11,
+        "p95": 2.13,
+        "p99": 2.16,
+        "max": 2.18
+      },
+      "sla_target_ms": 50.0,
+      "sla_compliant": true,
+      "sla_violation_pct": 0.0
+    },
+    {
+      "batch_size": 128,
+      "iterations": 50,
+      "total_inferences": 6400,
+      "duration_sec": 0.15,
+      "inferences_per_sec": 42689.3,
+      "batches_per_sec": 333.5,
+      "percentiles_ms": {
+        "min": 2.86,
+        "p50": 2.93,
+        "p90": 3.18,
+        "p95": 3.22,
+        "p99": 3.23,
+        "max": 3.23
+      },
+      "sla_target_ms": 50.0,
+      "sla_compliant": true,
+      "sla_violation_pct": 0.0
+    }
+  ]
+}

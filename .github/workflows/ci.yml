@@ -89,6 +89,8 @@ jobs:
         run: python3 scripts/benchmark_concurrency.py 50
       - name: Run 50-Node Chaos Engineering Simulation
         run: python3 scripts/chaos_simulation.py
+      - name: Run AI Inference Latency & SLA Profiler
+        run: python3 scripts/profile_inference_latency.py --iterations 30
 
   build-images:
     needs: [test-cpp, test-python]

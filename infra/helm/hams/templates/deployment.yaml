@@ -24,10 +24,28 @@ spec:
             {{- toYaml .Values.apiGateway.resources | nindent 12 }}
           livenessProbe:
             httpGet:
-              path: /health
+              path: /healthz
               port: {{ .Values.apiGateway.port }}
             initialDelaySeconds: 15
             periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: {{ .Values.apiGateway.port }}
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 2
+          startupProbe:
+            httpGet:
+              path: /startupz
+              port: {{ .Values.apiGateway.port }}
+            initialDelaySeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -55,7 +73,25 @@ spec:
             {{- toYaml .Values.scheduler.resources | nindent 12 }}
           livenessProbe:
             httpGet:
-              path: /health
+              path: /healthz
               port: {{ .Values.scheduler.port }}
             initialDelaySeconds: 10
             periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: {{ .Values.scheduler.port }}
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 2
+          startupProbe:
+            httpGet:
+              path: /startupz
+              port: {{ .Values.scheduler.port }}
+            initialDelaySeconds: 2
+            periodSeconds: 5
+            failureThreshold: 10

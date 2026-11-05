@@ -9,14 +9,28 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 from gateway_app.main import app
 
 @pytest.mark.asyncio
-async def test_health_endpoint():
+async def test_health_and_kubernetes_probes():
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url="http://test") as client:
-        response = await client.get("/health")
-        assert response.status_code == 200
-        data = response.json()
-        assert data["status"] == "healthy"
-        assert data["service"] == "api-gateway"
+        # Legacy /health
+        res = await client.get("/health")
+        assert res.status_code == 200
+        assert res.json()["status"] == "healthy"
+
+        # K8s Liveness Probe /healthz
+        res_live = await client.get("/healthz")
+        assert res_live.status_code == 200
+        assert res_live.json()["status"] == "alive"
+
+        # K8s Readiness Probe /readyz
+        res_ready = await client.get("/readyz")
+        assert res_ready.status_code == 200
+        assert res_ready.json()["status"] == "ready"
+
+        # K8s Startup Probe /startupz
+        res_startup = await client.get("/startupz")
+        assert res_startup.status_code == 200
+        assert res_startup.json()["status"] == "started"
 
 @pytest.mark.asyncio
 async def test_auth_token_generation():

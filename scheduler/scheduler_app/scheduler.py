@@ -31,6 +31,7 @@ class WorkloadStatus(str, Enum):
     COMPLETED = "COMPLETED"
     FAILED = "FAILED"
     CANCELLED = "CANCELLED"
+    QUARANTINED = "QUARANTINED"
 
 @dataclass
 class Workload:
@@ -73,11 +74,78 @@ class Workload:
             "reschedule_count": len(self.reschedule_history),
         }
 
+@dataclass
+class QuarantinedWorkload:
+    workload: Workload
+    quarantined_at: float
+    reason: str
+    error_trace: Optional[str] = None
+    node_history: List[str] = field(default_factory=list)
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "workload_id": self.workload.id,
+            "workload": self.workload.to_dict(),
+            "quarantined_at": self.quarantined_at,
+            "reason": self.reason,
+            "error_trace": self.error_trace,
+            "node_history": self.node_history,
+        }
+
+class DeadLetterQueue:
+    """
+    Dead-Letter Queue (DLQ) & Quarantine Manager for poisoned / unrecoverable AI workloads.
+    Prevents repeated cascading crashes across healthy cluster nodes by isolating
+    failing tasks and maintaining forensic failure history for operator audit and replay.
+    """
+    def __init__(self, max_size: int = 1000):
+        self.max_size = max_size
+        self._quarantine: Dict[str, QuarantinedWorkload] = {}
+
+    def quarantine(self, workload: Workload, reason: str, error_trace: Optional[str] = None) -> QuarantinedWorkload:
+        workload.status = WorkloadStatus.QUARANTINED
+        node_history = [str(h.get("from_node")) for h in workload.reschedule_history if h.get("from_node")]
+        if workload.assigned_node:
+            node_history.append(str(workload.assigned_node))
+            workload.assigned_node = None
+
+        qw = QuarantinedWorkload(
+            workload=workload,
+            quarantined_at=time.time(),
+            reason=reason,
+            error_trace=error_trace or f"Exceeded max_retries ({workload.max_retries}) across nodes: {node_history}",
+            node_history=node_history
+        )
+        self._quarantine[workload.id] = qw
+        logger.warning(
+            "Workload isolated in Dead-Letter Queue (DLQ)",
+            workload_id=workload.id,
+            reason=reason,
+            node_history=node_history,
+        )
+        return qw
+
+    def list_all(self) -> List[Dict[str, Any]]:
+        return [q.to_dict() for q in self._quarantine.values()]
+
+    def get(self, workload_id: str) -> Optional[QuarantinedWorkload]:
+        return self._quarantine.get(workload_id)
+
+    def remove(self, workload_id: str) -> Optional[QuarantinedWorkload]:
+        return self._quarantine.pop(workload_id, None)
+
+    def clear(self):
+        self._quarantine.clear()
+
+    def count(self) -> int:
+        return len(self._quarantine)
+
 class WorkloadScheduler:
     def __init__(self, node_manager: NodeManager, default_algorithm: SchedulingAlgorithm = SchedulingAlgorithm.LEAST_LOADED):
         self.node_manager = node_manager
         self.algorithm = default_algorithm
         self.workloads: Dict[str, Workload] = {}
+        self.dlq = DeadLetterQueue()
         self._lock = asyncio.Lock()
         self._rr_index = 0
         self.total_scheduled_count = 0
@@ -144,8 +212,20 @@ class WorkloadScheduler:
 
             wkl = self.workloads[workload_id]
             if wkl.retry_count >= wkl.max_retries:
-                wkl.status = WorkloadStatus.FAILED
-                logger.error("Workload exceeded max retries, marked FAILED", workload_id=workload_id)
+                old_node = wkl.assigned_node
+                if old_node and old_node in self.node_manager.nodes:
+                    try:
+                        await self.node_manager.release_resources(
+                            old_node, wkl.required_cpu, wkl.required_memory,
+                            wkl.required_gpu, wkl.required_disk, wkl.id
+                        )
+                    except Exception:
+                        pass
+                self.dlq.quarantine(
+                    wkl,
+                    reason=f"Exceeded max_retries limit ({wkl.max_retries}) during reschedule attempt ({reason})"
+                )
+                logger.error("Workload exceeded max retries, moved to DLQ (QUARANTINED)", workload_id=workload_id)
                 return False
 
             old_node = wkl.assigned_node
@@ -199,6 +279,38 @@ class WorkloadScheduler:
             wkl.status = WorkloadStatus.CANCELLED
             wkl.assigned_node = None
             return True
+
+    async def replay_quarantined(self, workload_id: str) -> Optional[Workload]:
+        """
+        Operator replay of a quarantined DLQ workload after defect remediation or capacity adjustment.
+        """
+        async with self._lock:
+            q_item = self.dlq.get(workload_id)
+            if not q_item:
+                return None
+
+            self.dlq.remove(workload_id)
+            wkl = q_item.workload
+            wkl.retry_count = 0
+            wkl.status = WorkloadStatus.PENDING
+            wkl.assigned_node = None
+
+            node_id = await self._find_node_for_workload(wkl, self.algorithm)
+            if node_id:
+                allocated = await self.node_manager.allocate_resources(
+                    node_id, wkl.required_cpu, wkl.required_memory,
+                    wkl.required_gpu, wkl.required_disk, wkl.id
+                )
+                if allocated:
+                    wkl.assigned_node = node_id
+                    wkl.status = WorkloadStatus.SCHEDULED
+                    wkl.started_at = time.time()
+                    self.total_scheduled_count += 1
+                    logger.info("Quarantined workload replayed and scheduled", workload_id=workload_id, node_id=node_id)
+                    return wkl
+
+            logger.info("Quarantined workload replayed and placed in PENDING queue", workload_id=workload_id)
+            return wkl
 
     async def batch_schedule(self, workload_defs: List[Dict[str, Any]]) -> List[Workload]:
         # First-fit-decreasing bin packing: sort workloads by composite resource size descending

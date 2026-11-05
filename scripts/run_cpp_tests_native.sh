@@ -70,7 +70,7 @@ fi
 
 # 5. Storage Service Lifecycle Tests
 echo ""
-echo "--- [5/5] Testing Storage Service & Quorum Replication (W=2, N=3) ---"
+echo "--- [5/6] Testing Storage Service & Quorum Replication (W=2, N=3) ---"
 if $CXX $CPP_FLAGS -Iservices/storage-manager/src \
     services/storage-manager/src/storage_service.cpp \
     services/storage-manager/src/shard_manager.cpp \
@@ -85,10 +85,23 @@ else
     FAILED=$((FAILED + 1))
 fi
 
+# 6. W3C Distributed Context Tracer Tests
+echo ""
+echo "--- [6/6] Testing W3C Distributed Context Tracer (TraceContext & Spans) ---"
+if $CXX $CPP_FLAGS \
+    shared/cpp/tests/test_tracer.cpp \
+    -o "$BUILD_TMP/test_tracer"; then
+    "$BUILD_TMP/test_tracer"
+    echo "[+] W3C Distributed Context Tracer suite passed!"
+else
+    echo "[-] W3C Distributed Context Tracer build failed!"
+    FAILED=$((FAILED + 1))
+fi
+
 echo ""
 if [ $FAILED -eq 0 ]; then
     echo "=========================================================="
-    echo "[+] ALL 16 C++17 DISTRIBUTED SYSTEM UNIT TESTS PASSED!"
+    echo "[+] ALL 20 C++17 DISTRIBUTED SYSTEM UNIT TESTS PASSED!"
     echo "=========================================================="
     exit 0
 else

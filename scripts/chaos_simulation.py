@@ -69,7 +69,7 @@ async def run_chaos_simulation():
     for n in node_mgr.nodes:
         detector.record_heartbeat(n)
 
-    print(f"[+] Cluster initialized: 50 heterogeneous nodes online")
+    print("[+] Cluster initialized: 50 heterogeneous nodes online")
     print(f"    - Total Compute : {sum(n.total_cpu for n in node_mgr.nodes.values()):.0f} vCPUs")
     print(f"    - Total Memory  : {sum(n.total_memory for n in node_mgr.nodes.values()):.0f} GB RAM")
     print(f"    - Total GPUs    : {sum(n.total_gpu for n in node_mgr.nodes.values())} Tensor Cores")
@@ -91,7 +91,7 @@ async def run_chaos_simulation():
         )
         deployed_workloads.append(wkl)
 
-    print(f"[+] 15 workloads successfully scheduled across cluster nodes.")
+    print("[+] 15 workloads successfully scheduled across cluster nodes.")
 
     # 3. Choose targets for chaos hardware crash
     # Pick 2 nodes running active workloads (including a GPU node)
@@ -134,7 +134,7 @@ async def run_chaos_simulation():
             detector._history[nid].last_heartbeat = past
 
     await detector.check_cluster_health()
-    print(f"    - Massive simultaneous failure threshold tripped (>20% of cluster)")
+    print("    - Massive simultaneous failure threshold tripped (>20% of cluster)")
     print(f"    - Degraded Mode Status: {YELLOW}{detector.degraded_mode}{RESET} (Avalanche load throttling active)")
 
     print(f"\n{BOLD}{GREEN}[✓] Chaos Simulation Complete: 100% workloads recovered with zero data loss!{RESET}\n")

@@ -55,11 +55,11 @@ async def run_pipeline_demo():
     total_mem = sum(n.total_memory for n in nodes)
     total_gpu = sum(n.total_gpu for n in nodes)
     
-    print(f"[+] Cluster Size:         50 Nodes")
+    print("[+] Cluster Size:         50 Nodes")
     print(f"[+] Total Compute Cores:  {total_cpu} CPU Cores")
     print(f"[+] Total Memory:         {total_mem} GB RAM")
     print(f"[+] Total Acceleration:   {total_gpu} Dedicated GPUs")
-    print(f"[+] Node Types:           Standard (30), High-Mem (8), GPU-Tier (8), Edge (4)")
+    print("[+] Node Types:           Standard (30), High-Mem (8), GPU-Tier (8), Edge (4)")
 
     # ---------------------------------------------------------
     # Step 2: Ingest & Preprocess Training Datasets
@@ -72,7 +72,7 @@ async def run_pipeline_demo():
         print(f"[+] Ingestion Target:     {csv_sample}")
         print(f"[+] Records Verified:     {len(lines) - 1} data records")
         print(f"[+] Header Fields:        {lines[0].strip()}")
-        print(f"[+] Integrity Checksum:   CRC32 Verification [PASSED]")
+        print("[+] Integrity Checksum:   CRC32 Verification [PASSED]")
     else:
         print("[*] Generating on-the-fly dataset...")
     
@@ -120,12 +120,12 @@ async def run_pipeline_demo():
     )
     print(f"[+] Registered Model:     {record.name} (ID: {record.id})")
     print(f"[+] Framework:            {record.framework}")
-    print(f"[+] Baseline Version:     v1.0.0 (Status: Staging)")
+    print("[+] Baseline Version:     v1.0.0 (Status: Staging)")
     
     # Promote version to production
     promoted = registry.versioning.promote_version(record.id, "v1.0.0", "production")
     download_url = registry.artifact_store.generate_signed_download_url(promoted.artifact_sha)
-    print(f"[+] Version Promoted:     v1.0.0 -> [PRODUCTION]")
+    print("[+] Version Promoted:     v1.0.0 -> [PRODUCTION]")
     print(f"[+] Signed Cloud URL:     {download_url}")
 
     # ---------------------------------------------------------
