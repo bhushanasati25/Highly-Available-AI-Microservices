@@ -55,6 +55,8 @@ jobs:
         run: |
           mkdir -p services/storage-manager/build && cd services/storage-manager/build
           cmake .. && make -j$(nproc) && ctest --output-on-failure
+      - name: Run Native C++17 Zero-Dependency Test Suite
+        run: ./scripts/run_cpp_tests_native.sh
 
   test-python:
     runs-on: ubuntu-22.04
@@ -79,6 +81,7 @@ jobs:
                  services/training-orchestrator/tests \
                  services/model-manager/tests \
                  services/monitoring/tests \
+                 tests/integration/ \
                  --cov=. --cov-report=xml
 
   build-images:
