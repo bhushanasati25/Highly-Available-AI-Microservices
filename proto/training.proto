@@ -1,0 +1,226 @@
+// =============================================================================
+// training.proto
+//
+// Defines the TrainingService and its associated messages.  This service
+// manages the lifecycle of model-training jobs — submission, status tracking,
+// cancellation, and listing — and integrates with the cluster scheduler to
+// assign jobs to available compute nodes.
+// =============================================================================
+
+syntax = "proto3";
+
+package hams;
+
+option go_package = "github.com/hams/proto/training";
+option java_package = "com.hams.proto.training";
+
+import "common.proto";
+
+// ---------------------------------------------------------------------------
+// TrainingService — the control plane for model-training jobs.  Callers
+// submit training requests, monitor progress, cancel running jobs, and
+// list historical or active jobs with optional filtering.
+// ---------------------------------------------------------------------------
+service TrainingService {
+  // SubmitJob creates a new training job and enqueues it for execution.
+  rpc SubmitJob(JobSubmission) returns (TrainingJob);
+
+  // GetJobStatus retrieves the current state and metrics of a training job.
+  rpc GetJobStatus(JobStatusRequest) returns (JobStatus);
+
+  // CancelJob requests graceful cancellation of a running or queued job.
+  rpc CancelJob(CancelJobRequest) returns (CancelJobResponse);
+
+  // ListJobs returns a paginated list of jobs, optionally filtered by state.
+  rpc ListJobs(ListJobsRequest) returns (ListJobsResponse);
+}
+
+// ---------------------------------------------------------------------------
+// ModelType — the family of machine-learning model to train.
+// ---------------------------------------------------------------------------
+enum ModelType {
+  // Ordinary least-squares linear regression.
+  LINEAR_REGRESSION = 0;
+
+  // Binary or multinomial logistic regression.
+  LOGISTIC_REGRESSION = 1;
+
+  // Fully-connected or convolutional neural network.
+  NEURAL_NETWORK = 2;
+
+  // Ensemble of decision trees using bagging.
+  RANDOM_FOREST = 3;
+
+  // Gradient-boosted decision trees (e.g. XGBoost, LightGBM).
+  GRADIENT_BOOST = 4;
+
+  // Transformer-based model (e.g. BERT, GPT).
+  TRANSFORMER = 5;
+
+  // User-supplied model implementation.
+  CUSTOM = 6;
+}
+
+// ---------------------------------------------------------------------------
+// JobState — the lifecycle state of a training job.
+// ---------------------------------------------------------------------------
+enum JobState {
+  // The job has been accepted and is waiting for a compute slot.
+  QUEUED = 0;
+
+  // The job is actively training on a compute node.
+  TRAINING = 1;
+
+  // Training finished successfully.
+  COMPLETED = 2;
+
+  // Training terminated due to an unrecoverable error.
+  FAILED = 3;
+
+  // Training was stopped by an explicit cancellation request.
+  CANCELLED = 4;
+}
+
+// ---------------------------------------------------------------------------
+// TrainingJob — the canonical representation of a training job stored by the
+// platform.  Returned when a job is first submitted.
+// ---------------------------------------------------------------------------
+message TrainingJob {
+  // Server-assigned unique identifier for this job.
+  string job_id = 1;
+
+  // Model family to train.
+  ModelType model_type = 2;
+
+  // Identifier of the dataset to use for training.
+  string dataset_id = 3;
+
+  // Key-value hyperparameter overrides (e.g. "learning_rate" → "0.001").
+  map<string, string> hyperparameters = 4;
+
+  // Compute node to which this job has been assigned (may be unset while
+  // queued).
+  NodeInfo assigned_node = 5;
+
+  // Current high-level status of the job.
+  Status status = 6;
+
+  // Timestamp when the job record was created.
+  Timestamp created_at = 7;
+
+  // Timestamp of the most recent status change.
+  Timestamp updated_at = 8;
+}
+
+// ---------------------------------------------------------------------------
+// JobSubmission — a request to create and enqueue a new training job.
+// ---------------------------------------------------------------------------
+message JobSubmission {
+  // Model family to train.
+  ModelType model_type = 1;
+
+  // Identifier of the dataset to use for training.
+  string dataset_id = 2;
+
+  // Key-value hyperparameter overrides.
+  map<string, string> hyperparameters = 3;
+
+  // Scheduling priority (higher values are scheduled first).
+  int32 priority = 4;
+
+  // Maximum number of training epochs.
+  int32 max_epochs = 5;
+
+  // Whether to stop training early when validation loss plateaus.
+  bool early_stopping = 6;
+}
+
+// ---------------------------------------------------------------------------
+// JobStatus — a detailed snapshot of a training job's current progress.
+// ---------------------------------------------------------------------------
+message JobStatus {
+  // Job identifier.
+  string job_id = 1;
+
+  // Current lifecycle state.
+  JobState state = 2;
+
+  // Overall training progress as a fraction in [0.0, 1.0].
+  double progress = 3;
+
+  // Latest training/validation metrics (e.g. "loss" → 0.042,
+  // "accuracy" → 0.97).
+  map<string, double> metrics = 4;
+
+  // Compute node executing this job.
+  NodeInfo assigned_node = 5;
+
+  // The epoch currently being trained.
+  int32 current_epoch = 6;
+
+  // Total number of epochs requested.
+  int32 total_epochs = 7;
+
+  // Estimated wall-clock seconds remaining until completion.
+  double estimated_remaining_seconds = 8;
+}
+
+// ---------------------------------------------------------------------------
+// JobStatusRequest — identifies the job whose status is being queried.
+// ---------------------------------------------------------------------------
+message JobStatusRequest {
+  // Job identifier.
+  string job_id = 1;
+}
+
+// ---------------------------------------------------------------------------
+// CancelJobRequest — requests cancellation of a running or queued job.
+// ---------------------------------------------------------------------------
+message CancelJobRequest {
+  // Identifier of the job to cancel.
+  string job_id = 1;
+
+  // Optional reason for the cancellation (logged for auditing).
+  string reason = 2;
+}
+
+// ---------------------------------------------------------------------------
+// CancelJobResponse — result of a cancellation attempt.
+// ---------------------------------------------------------------------------
+message CancelJobResponse {
+  // True if the job was successfully cancelled or was already cancelled.
+  bool success = 1;
+
+  // Human-readable result message.
+  string message = 2;
+}
+
+// ---------------------------------------------------------------------------
+// ListJobsRequest — retrieves a filtered, paginated list of training jobs.
+// ---------------------------------------------------------------------------
+message ListJobsRequest {
+  // Only return jobs in this state.  Unset (QUEUED=0) returns all states
+  // unless the caller explicitly filters for QUEUED.
+  JobState filter_state = 1;
+
+  // Maximum number of jobs to return in one page.
+  int32 page_size = 2;
+
+  // Opaque token for cursor-based pagination (empty for the first page).
+  string page_token = 3;
+}
+
+// ---------------------------------------------------------------------------
+// ListJobsResponse — a page of training job statuses.
+// ---------------------------------------------------------------------------
+message ListJobsResponse {
+  // Jobs matching the request filters.
+  repeated JobStatus jobs = 1;
+
+  // Token to pass in the next ListJobsRequest to fetch the next page.
+  // Empty when there are no more results.
+  string next_page_token = 2;
+
+  // Total number of jobs matching the filter (across all pages).
+  int32 total_count = 3;
+}

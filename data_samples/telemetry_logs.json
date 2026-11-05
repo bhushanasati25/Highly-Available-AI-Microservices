@@ -1,0 +1,2002 @@
+[
+  {
+    "node_id": "worker-node-48",
+    "sequence": 1,
+    "metrics": {
+      "cpu_load": 50.6,
+      "memory_gb": 45.41,
+      "gpu_temp_c": 45
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-34",
+    "sequence": 2,
+    "metrics": {
+      "cpu_load": 86.2,
+      "memory_gb": 20.06,
+      "gpu_temp_c": 46
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-10",
+    "sequence": 3,
+    "metrics": {
+      "cpu_load": 26.7,
+      "memory_gb": 18.55,
+      "gpu_temp_c": 82
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-43",
+    "sequence": 4,
+    "metrics": {
+      "cpu_load": 33.2,
+      "memory_gb": 41.16,
+      "gpu_temp_c": 55
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-31",
+    "sequence": 5,
+    "metrics": {
+      "cpu_load": 79.9,
+      "memory_gb": 21.18,
+      "gpu_temp_c": 79
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-11",
+    "sequence": 6,
+    "metrics": {
+      "cpu_load": 17.8,
+      "memory_gb": 62.58,
+      "gpu_temp_c": 51
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-07",
+    "sequence": 7,
+    "metrics": {
+      "cpu_load": 58.1,
+      "memory_gb": 20.67,
+      "gpu_temp_c": 67
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-44",
+    "sequence": 8,
+    "metrics": {
+      "cpu_load": 56.0,
+      "memory_gb": 54.78,
+      "gpu_temp_c": 58
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-44",
+    "sequence": 9,
+    "metrics": {
+      "cpu_load": 33.6,
+      "memory_gb": 16.98,
+      "gpu_temp_c": 74
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-30",
+    "sequence": 10,
+    "metrics": {
+      "cpu_load": 75.8,
+      "memory_gb": 47.99,
+      "gpu_temp_c": 61
+    },
+    "status": "DEGRADED"
+  },
+  {
+    "node_id": "worker-node-10",
+    "sequence": 11,
+    "metrics": {
+      "cpu_load": 27.6,
+      "memory_gb": 25.32,
+      "gpu_temp_c": 73
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-30",
+    "sequence": 12,
+    "metrics": {
+      "cpu_load": 13.5,
+      "memory_gb": 9.7,
+      "gpu_temp_c": 52
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-32",
+    "sequence": 13,
+    "metrics": {
+      "cpu_load": 91.7,
+      "memory_gb": 44.41,
+      "gpu_temp_c": 59
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-23",
+    "sequence": 14,
+    "metrics": {
+      "cpu_load": 35.5,
+      "memory_gb": 10.82,
+      "gpu_temp_c": 45
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-21",
+    "sequence": 15,
+    "metrics": {
+      "cpu_load": 74.3,
+      "memory_gb": 11.42,
+      "gpu_temp_c": 63
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-04",
+    "sequence": 16,
+    "metrics": {
+      "cpu_load": 32.3,
+      "memory_gb": 56.43,
+      "gpu_temp_c": 74
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-10",
+    "sequence": 17,
+    "metrics": {
+      "cpu_load": 60.2,
+      "memory_gb": 13.62,
+      "gpu_temp_c": 72
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-16",
+    "sequence": 18,
+    "metrics": {
+      "cpu_load": 86.3,
+      "memory_gb": 60.65,
+      "gpu_temp_c": 51
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-01",
+    "sequence": 19,
+    "metrics": {
+      "cpu_load": 61.5,
+      "memory_gb": 33.7,
+      "gpu_temp_c": 78
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-19",
+    "sequence": 20,
+    "metrics": {
+      "cpu_load": 32.4,
+      "memory_gb": 56.49,
+      "gpu_temp_c": 49
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-20",
+    "sequence": 21,
+    "metrics": {
+      "cpu_load": 19.1,
+      "memory_gb": 37.46,
+      "gpu_temp_c": 51
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-40",
+    "sequence": 22,
+    "metrics": {
+      "cpu_load": 92.3,
+      "memory_gb": 37.22,
+      "gpu_temp_c": 53
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-27",
+    "sequence": 23,
+    "metrics": {
+      "cpu_load": 35.2,
+      "memory_gb": 12.61,
+      "gpu_temp_c": 56
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-23",
+    "sequence": 24,
+    "metrics": {
+      "cpu_load": 25.5,
+      "memory_gb": 38.59,
+      "gpu_temp_c": 63
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-27",
+    "sequence": 25,
+    "metrics": {
+      "cpu_load": 63.7,
+      "memory_gb": 12.07,
+      "gpu_temp_c": 67
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-09",
+    "sequence": 26,
+    "metrics": {
+      "cpu_load": 44.9,
+      "memory_gb": 10.34,
+      "gpu_temp_c": 48
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-20",
+    "sequence": 27,
+    "metrics": {
+      "cpu_load": 53.7,
+      "memory_gb": 19.08,
+      "gpu_temp_c": 55
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-32",
+    "sequence": 28,
+    "metrics": {
+      "cpu_load": 84.7,
+      "memory_gb": 56.06,
+      "gpu_temp_c": 74
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-11",
+    "sequence": 29,
+    "metrics": {
+      "cpu_load": 75.7,
+      "memory_gb": 49.07,
+      "gpu_temp_c": 70
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-05",
+    "sequence": 30,
+    "metrics": {
+      "cpu_load": 28.9,
+      "memory_gb": 51.06,
+      "gpu_temp_c": 59
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-04",
+    "sequence": 31,
+    "metrics": {
+      "cpu_load": 84.3,
+      "memory_gb": 54.37,
+      "gpu_temp_c": 61
+    },
+    "status": "DEGRADED"
+  },
+  {
+    "node_id": "worker-node-29",
+    "sequence": 32,
+    "metrics": {
+      "cpu_load": 80.3,
+      "memory_gb": 54.86,
+      "gpu_temp_c": 58
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-32",
+    "sequence": 33,
+    "metrics": {
+      "cpu_load": 78.7,
+      "memory_gb": 51.39,
+      "gpu_temp_c": 48
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-43",
+    "sequence": 34,
+    "metrics": {
+      "cpu_load": 16.4,
+      "memory_gb": 50.28,
+      "gpu_temp_c": 54
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-29",
+    "sequence": 35,
+    "metrics": {
+      "cpu_load": 50.6,
+      "memory_gb": 16.88,
+      "gpu_temp_c": 49
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-18",
+    "sequence": 36,
+    "metrics": {
+      "cpu_load": 10.7,
+      "memory_gb": 47.18,
+      "gpu_temp_c": 51
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-04",
+    "sequence": 37,
+    "metrics": {
+      "cpu_load": 28.5,
+      "memory_gb": 60.03,
+      "gpu_temp_c": 73
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-16",
+    "sequence": 38,
+    "metrics": {
+      "cpu_load": 80.2,
+      "memory_gb": 21.37,
+      "gpu_temp_c": 73
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-36",
+    "sequence": 39,
+    "metrics": {
+      "cpu_load": 37.0,
+      "memory_gb": 47.02,
+      "gpu_temp_c": 60
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-44",
+    "sequence": 40,
+    "metrics": {
+      "cpu_load": 35.5,
+      "memory_gb": 6.77,
+      "gpu_temp_c": 67
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-42",
+    "sequence": 41,
+    "metrics": {
+      "cpu_load": 19.3,
+      "memory_gb": 39.37,
+      "gpu_temp_c": 68
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-18",
+    "sequence": 42,
+    "metrics": {
+      "cpu_load": 91.3,
+      "memory_gb": 22.9,
+      "gpu_temp_c": 82
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-45",
+    "sequence": 43,
+    "metrics": {
+      "cpu_load": 56.0,
+      "memory_gb": 8.81,
+      "gpu_temp_c": 81
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-40",
+    "sequence": 44,
+    "metrics": {
+      "cpu_load": 65.9,
+      "memory_gb": 27.52,
+      "gpu_temp_c": 69
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-33",
+    "sequence": 45,
+    "metrics": {
+      "cpu_load": 46.8,
+      "memory_gb": 16.01,
+      "gpu_temp_c": 57
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-42",
+    "sequence": 46,
+    "metrics": {
+      "cpu_load": 44.6,
+      "memory_gb": 58.81,
+      "gpu_temp_c": 47
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-20",
+    "sequence": 47,
+    "metrics": {
+      "cpu_load": 40.1,
+      "memory_gb": 33.95,
+      "gpu_temp_c": 49
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-05",
+    "sequence": 48,
+    "metrics": {
+      "cpu_load": 60.7,
+      "memory_gb": 51.46,
+      "gpu_temp_c": 72
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-15",
+    "sequence": 49,
+    "metrics": {
+      "cpu_load": 93.0,
+      "memory_gb": 54.44,
+      "gpu_temp_c": 60
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-32",
+    "sequence": 50,
+    "metrics": {
+      "cpu_load": 26.7,
+      "memory_gb": 39.06,
+      "gpu_temp_c": 64
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-50",
+    "sequence": 51,
+    "metrics": {
+      "cpu_load": 36.2,
+      "memory_gb": 43.21,
+      "gpu_temp_c": 66
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-49",
+    "sequence": 52,
+    "metrics": {
+      "cpu_load": 18.7,
+      "memory_gb": 40.45,
+      "gpu_temp_c": 55
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-24",
+    "sequence": 53,
+    "metrics": {
+      "cpu_load": 63.8,
+      "memory_gb": 45.63,
+      "gpu_temp_c": 70
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-16",
+    "sequence": 54,
+    "metrics": {
+      "cpu_load": 73.3,
+      "memory_gb": 59.12,
+      "gpu_temp_c": 67
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-12",
+    "sequence": 55,
+    "metrics": {
+      "cpu_load": 52.7,
+      "memory_gb": 45.5,
+      "gpu_temp_c": 57
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-19",
+    "sequence": 56,
+    "metrics": {
+      "cpu_load": 70.1,
+      "memory_gb": 43.43,
+      "gpu_temp_c": 72
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-18",
+    "sequence": 57,
+    "metrics": {
+      "cpu_load": 68.1,
+      "memory_gb": 9.61,
+      "gpu_temp_c": 67
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-14",
+    "sequence": 58,
+    "metrics": {
+      "cpu_load": 31.5,
+      "memory_gb": 53.19,
+      "gpu_temp_c": 71
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-47",
+    "sequence": 59,
+    "metrics": {
+      "cpu_load": 17.1,
+      "memory_gb": 33.24,
+      "gpu_temp_c": 77
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-10",
+    "sequence": 60,
+    "metrics": {
+      "cpu_load": 90.3,
+      "memory_gb": 22.37,
+      "gpu_temp_c": 55
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-15",
+    "sequence": 61,
+    "metrics": {
+      "cpu_load": 66.5,
+      "memory_gb": 4.97,
+      "gpu_temp_c": 71
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-07",
+    "sequence": 62,
+    "metrics": {
+      "cpu_load": 61.1,
+      "memory_gb": 16.37,
+      "gpu_temp_c": 50
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-06",
+    "sequence": 63,
+    "metrics": {
+      "cpu_load": 92.0,
+      "memory_gb": 42.92,
+      "gpu_temp_c": 53
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-08",
+    "sequence": 64,
+    "metrics": {
+      "cpu_load": 11.3,
+      "memory_gb": 43.17,
+      "gpu_temp_c": 73
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-05",
+    "sequence": 65,
+    "metrics": {
+      "cpu_load": 69.4,
+      "memory_gb": 16.07,
+      "gpu_temp_c": 52
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-01",
+    "sequence": 66,
+    "metrics": {
+      "cpu_load": 32.4,
+      "memory_gb": 38.97,
+      "gpu_temp_c": 74
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-39",
+    "sequence": 67,
+    "metrics": {
+      "cpu_load": 94.4,
+      "memory_gb": 22.79,
+      "gpu_temp_c": 81
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-28",
+    "sequence": 68,
+    "metrics": {
+      "cpu_load": 42.1,
+      "memory_gb": 30.88,
+      "gpu_temp_c": 68
+    },
+    "status": "DEGRADED"
+  },
+  {
+    "node_id": "worker-node-22",
+    "sequence": 69,
+    "metrics": {
+      "cpu_load": 57.8,
+      "memory_gb": 19.49,
+      "gpu_temp_c": 77
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-03",
+    "sequence": 70,
+    "metrics": {
+      "cpu_load": 24.1,
+      "memory_gb": 63.09,
+      "gpu_temp_c": 47
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-18",
+    "sequence": 71,
+    "metrics": {
+      "cpu_load": 34.6,
+      "memory_gb": 16.92,
+      "gpu_temp_c": 45
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-50",
+    "sequence": 72,
+    "metrics": {
+      "cpu_load": 81.7,
+      "memory_gb": 20.44,
+      "gpu_temp_c": 66
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-46",
+    "sequence": 73,
+    "metrics": {
+      "cpu_load": 84.2,
+      "memory_gb": 14.47,
+      "gpu_temp_c": 74
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-05",
+    "sequence": 74,
+    "metrics": {
+      "cpu_load": 29.7,
+      "memory_gb": 27.52,
+      "gpu_temp_c": 53
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-34",
+    "sequence": 75,
+    "metrics": {
+      "cpu_load": 38.2,
+      "memory_gb": 31.53,
+      "gpu_temp_c": 65
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-40",
+    "sequence": 76,
+    "metrics": {
+      "cpu_load": 52.9,
+      "memory_gb": 38.36,
+      "gpu_temp_c": 54
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-12",
+    "sequence": 77,
+    "metrics": {
+      "cpu_load": 36.7,
+      "memory_gb": 31.32,
+      "gpu_temp_c": 80
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-03",
+    "sequence": 78,
+    "metrics": {
+      "cpu_load": 86.2,
+      "memory_gb": 25.6,
+      "gpu_temp_c": 48
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-07",
+    "sequence": 79,
+    "metrics": {
+      "cpu_load": 94.5,
+      "memory_gb": 57.68,
+      "gpu_temp_c": 82
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-07",
+    "sequence": 80,
+    "metrics": {
+      "cpu_load": 69.1,
+      "memory_gb": 50.08,
+      "gpu_temp_c": 66
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-28",
+    "sequence": 81,
+    "metrics": {
+      "cpu_load": 54.7,
+      "memory_gb": 53.0,
+      "gpu_temp_c": 56
+    },
+    "status": "DEGRADED"
+  },
+  {
+    "node_id": "worker-node-13",
+    "sequence": 82,
+    "metrics": {
+      "cpu_load": 84.1,
+      "memory_gb": 12.99,
+      "gpu_temp_c": 53
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-28",
+    "sequence": 83,
+    "metrics": {
+      "cpu_load": 61.2,
+      "memory_gb": 15.06,
+      "gpu_temp_c": 62
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-48",
+    "sequence": 84,
+    "metrics": {
+      "cpu_load": 15.7,
+      "memory_gb": 57.45,
+      "gpu_temp_c": 46
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-05",
+    "sequence": 85,
+    "metrics": {
+      "cpu_load": 56.8,
+      "memory_gb": 20.4,
+      "gpu_temp_c": 67
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-22",
+    "sequence": 86,
+    "metrics": {
+      "cpu_load": 91.6,
+      "memory_gb": 34.58,
+      "gpu_temp_c": 73
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-11",
+    "sequence": 87,
+    "metrics": {
+      "cpu_load": 47.9,
+      "memory_gb": 48.6,
+      "gpu_temp_c": 55
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-35",
+    "sequence": 88,
+    "metrics": {
+      "cpu_load": 51.2,
+      "memory_gb": 28.51,
+      "gpu_temp_c": 70
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-19",
+    "sequence": 89,
+    "metrics": {
+      "cpu_load": 10.9,
+      "memory_gb": 45.78,
+      "gpu_temp_c": 50
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-47",
+    "sequence": 90,
+    "metrics": {
+      "cpu_load": 56.5,
+      "memory_gb": 56.72,
+      "gpu_temp_c": 47
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-33",
+    "sequence": 91,
+    "metrics": {
+      "cpu_load": 37.9,
+      "memory_gb": 12.31,
+      "gpu_temp_c": 59
+    },
+    "status": "DEGRADED"
+  },
+  {
+    "node_id": "worker-node-47",
+    "sequence": 92,
+    "metrics": {
+      "cpu_load": 21.1,
+      "memory_gb": 9.0,
+      "gpu_temp_c": 75
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-16",
+    "sequence": 93,
+    "metrics": {
+      "cpu_load": 12.6,
+      "memory_gb": 55.97,
+      "gpu_temp_c": 58
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-18",
+    "sequence": 94,
+    "metrics": {
+      "cpu_load": 15.9,
+      "memory_gb": 46.7,
+      "gpu_temp_c": 58
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-38",
+    "sequence": 95,
+    "metrics": {
+      "cpu_load": 45.0,
+      "memory_gb": 19.25,
+      "gpu_temp_c": 61
+    },
+    "status": "DEGRADED"
+  },
+  {
+    "node_id": "worker-node-23",
+    "sequence": 96,
+    "metrics": {
+      "cpu_load": 10.4,
+      "memory_gb": 12.17,
+      "gpu_temp_c": 78
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-29",
+    "sequence": 97,
+    "metrics": {
+      "cpu_load": 89.7,
+      "memory_gb": 6.43,
+      "gpu_temp_c": 46
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-29",
+    "sequence": 98,
+    "metrics": {
+      "cpu_load": 51.2,
+      "memory_gb": 4.1,
+      "gpu_temp_c": 75
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-09",
+    "sequence": 99,
+    "metrics": {
+      "cpu_load": 22.7,
+      "memory_gb": 50.04,
+      "gpu_temp_c": 53
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-31",
+    "sequence": 100,
+    "metrics": {
+      "cpu_load": 42.8,
+      "memory_gb": 30.88,
+      "gpu_temp_c": 56
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-48",
+    "sequence": 101,
+    "metrics": {
+      "cpu_load": 60.5,
+      "memory_gb": 9.94,
+      "gpu_temp_c": 46
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-39",
+    "sequence": 102,
+    "metrics": {
+      "cpu_load": 87.7,
+      "memory_gb": 5.82,
+      "gpu_temp_c": 82
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-18",
+    "sequence": 103,
+    "metrics": {
+      "cpu_load": 49.3,
+      "memory_gb": 45.27,
+      "gpu_temp_c": 56
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-17",
+    "sequence": 104,
+    "metrics": {
+      "cpu_load": 48.8,
+      "memory_gb": 53.02,
+      "gpu_temp_c": 53
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-42",
+    "sequence": 105,
+    "metrics": {
+      "cpu_load": 29.7,
+      "memory_gb": 44.94,
+      "gpu_temp_c": 58
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-29",
+    "sequence": 106,
+    "metrics": {
+      "cpu_load": 15.3,
+      "memory_gb": 48.54,
+      "gpu_temp_c": 71
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-02",
+    "sequence": 107,
+    "metrics": {
+      "cpu_load": 77.0,
+      "memory_gb": 10.1,
+      "gpu_temp_c": 60
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-38",
+    "sequence": 108,
+    "metrics": {
+      "cpu_load": 13.8,
+      "memory_gb": 27.54,
+      "gpu_temp_c": 75
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-15",
+    "sequence": 109,
+    "metrics": {
+      "cpu_load": 55.8,
+      "memory_gb": 16.79,
+      "gpu_temp_c": 59
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-27",
+    "sequence": 110,
+    "metrics": {
+      "cpu_load": 65.8,
+      "memory_gb": 31.16,
+      "gpu_temp_c": 57
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-40",
+    "sequence": 111,
+    "metrics": {
+      "cpu_load": 54.8,
+      "memory_gb": 32.72,
+      "gpu_temp_c": 45
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-17",
+    "sequence": 112,
+    "metrics": {
+      "cpu_load": 67.5,
+      "memory_gb": 53.63,
+      "gpu_temp_c": 64
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-07",
+    "sequence": 113,
+    "metrics": {
+      "cpu_load": 78.0,
+      "memory_gb": 23.74,
+      "gpu_temp_c": 80
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-01",
+    "sequence": 114,
+    "metrics": {
+      "cpu_load": 48.8,
+      "memory_gb": 59.74,
+      "gpu_temp_c": 80
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-34",
+    "sequence": 115,
+    "metrics": {
+      "cpu_load": 61.6,
+      "memory_gb": 55.75,
+      "gpu_temp_c": 73
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-49",
+    "sequence": 116,
+    "metrics": {
+      "cpu_load": 14.2,
+      "memory_gb": 45.48,
+      "gpu_temp_c": 55
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-19",
+    "sequence": 117,
+    "metrics": {
+      "cpu_load": 11.6,
+      "memory_gb": 10.47,
+      "gpu_temp_c": 56
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-48",
+    "sequence": 118,
+    "metrics": {
+      "cpu_load": 81.4,
+      "memory_gb": 26.08,
+      "gpu_temp_c": 69
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-12",
+    "sequence": 119,
+    "metrics": {
+      "cpu_load": 27.6,
+      "memory_gb": 34.31,
+      "gpu_temp_c": 70
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-12",
+    "sequence": 120,
+    "metrics": {
+      "cpu_load": 12.0,
+      "memory_gb": 28.15,
+      "gpu_temp_c": 47
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-03",
+    "sequence": 121,
+    "metrics": {
+      "cpu_load": 20.4,
+      "memory_gb": 29.97,
+      "gpu_temp_c": 63
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-40",
+    "sequence": 122,
+    "metrics": {
+      "cpu_load": 84.7,
+      "memory_gb": 42.68,
+      "gpu_temp_c": 79
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-31",
+    "sequence": 123,
+    "metrics": {
+      "cpu_load": 82.8,
+      "memory_gb": 41.75,
+      "gpu_temp_c": 53
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-01",
+    "sequence": 124,
+    "metrics": {
+      "cpu_load": 82.0,
+      "memory_gb": 46.3,
+      "gpu_temp_c": 46
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-35",
+    "sequence": 125,
+    "metrics": {
+      "cpu_load": 18.8,
+      "memory_gb": 6.48,
+      "gpu_temp_c": 67
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-20",
+    "sequence": 126,
+    "metrics": {
+      "cpu_load": 81.0,
+      "memory_gb": 39.74,
+      "gpu_temp_c": 53
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-23",
+    "sequence": 127,
+    "metrics": {
+      "cpu_load": 90.2,
+      "memory_gb": 17.87,
+      "gpu_temp_c": 56
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-08",
+    "sequence": 128,
+    "metrics": {
+      "cpu_load": 12.7,
+      "memory_gb": 62.53,
+      "gpu_temp_c": 67
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-40",
+    "sequence": 129,
+    "metrics": {
+      "cpu_load": 14.2,
+      "memory_gb": 33.02,
+      "gpu_temp_c": 48
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-46",
+    "sequence": 130,
+    "metrics": {
+      "cpu_load": 36.1,
+      "memory_gb": 22.86,
+      "gpu_temp_c": 68
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-03",
+    "sequence": 131,
+    "metrics": {
+      "cpu_load": 68.3,
+      "memory_gb": 28.0,
+      "gpu_temp_c": 61
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-23",
+    "sequence": 132,
+    "metrics": {
+      "cpu_load": 53.2,
+      "memory_gb": 31.37,
+      "gpu_temp_c": 66
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-31",
+    "sequence": 133,
+    "metrics": {
+      "cpu_load": 28.1,
+      "memory_gb": 31.63,
+      "gpu_temp_c": 77
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-46",
+    "sequence": 134,
+    "metrics": {
+      "cpu_load": 22.2,
+      "memory_gb": 62.89,
+      "gpu_temp_c": 61
+    },
+    "status": "DEGRADED"
+  },
+  {
+    "node_id": "worker-node-05",
+    "sequence": 135,
+    "metrics": {
+      "cpu_load": 71.5,
+      "memory_gb": 59.8,
+      "gpu_temp_c": 70
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-21",
+    "sequence": 136,
+    "metrics": {
+      "cpu_load": 55.0,
+      "memory_gb": 5.38,
+      "gpu_temp_c": 78
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-16",
+    "sequence": 137,
+    "metrics": {
+      "cpu_load": 24.3,
+      "memory_gb": 62.84,
+      "gpu_temp_c": 60
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-11",
+    "sequence": 138,
+    "metrics": {
+      "cpu_load": 39.6,
+      "memory_gb": 26.05,
+      "gpu_temp_c": 51
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-05",
+    "sequence": 139,
+    "metrics": {
+      "cpu_load": 35.9,
+      "memory_gb": 47.92,
+      "gpu_temp_c": 59
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-03",
+    "sequence": 140,
+    "metrics": {
+      "cpu_load": 20.5,
+      "memory_gb": 19.17,
+      "gpu_temp_c": 77
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-04",
+    "sequence": 141,
+    "metrics": {
+      "cpu_load": 11.3,
+      "memory_gb": 24.06,
+      "gpu_temp_c": 77
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-31",
+    "sequence": 142,
+    "metrics": {
+      "cpu_load": 53.3,
+      "memory_gb": 58.12,
+      "gpu_temp_c": 63
+    },
+    "status": "DEGRADED"
+  },
+  {
+    "node_id": "worker-node-43",
+    "sequence": 143,
+    "metrics": {
+      "cpu_load": 56.7,
+      "memory_gb": 55.66,
+      "gpu_temp_c": 62
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-07",
+    "sequence": 144,
+    "metrics": {
+      "cpu_load": 32.3,
+      "memory_gb": 63.34,
+      "gpu_temp_c": 68
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-49",
+    "sequence": 145,
+    "metrics": {
+      "cpu_load": 89.6,
+      "memory_gb": 26.27,
+      "gpu_temp_c": 56
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-18",
+    "sequence": 146,
+    "metrics": {
+      "cpu_load": 67.9,
+      "memory_gb": 34.04,
+      "gpu_temp_c": 52
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-37",
+    "sequence": 147,
+    "metrics": {
+      "cpu_load": 12.2,
+      "memory_gb": 9.06,
+      "gpu_temp_c": 72
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-26",
+    "sequence": 148,
+    "metrics": {
+      "cpu_load": 94.8,
+      "memory_gb": 34.49,
+      "gpu_temp_c": 75
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-21",
+    "sequence": 149,
+    "metrics": {
+      "cpu_load": 44.4,
+      "memory_gb": 56.15,
+      "gpu_temp_c": 62
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-27",
+    "sequence": 150,
+    "metrics": {
+      "cpu_load": 31.1,
+      "memory_gb": 39.63,
+      "gpu_temp_c": 67
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-06",
+    "sequence": 151,
+    "metrics": {
+      "cpu_load": 27.8,
+      "memory_gb": 34.89,
+      "gpu_temp_c": 79
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-41",
+    "sequence": 152,
+    "metrics": {
+      "cpu_load": 67.1,
+      "memory_gb": 58.67,
+      "gpu_temp_c": 72
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-48",
+    "sequence": 153,
+    "metrics": {
+      "cpu_load": 90.7,
+      "memory_gb": 29.8,
+      "gpu_temp_c": 76
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-44",
+    "sequence": 154,
+    "metrics": {
+      "cpu_load": 51.3,
+      "memory_gb": 11.75,
+      "gpu_temp_c": 77
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-50",
+    "sequence": 155,
+    "metrics": {
+      "cpu_load": 85.7,
+      "memory_gb": 17.85,
+      "gpu_temp_c": 80
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-33",
+    "sequence": 156,
+    "metrics": {
+      "cpu_load": 72.9,
+      "memory_gb": 58.21,
+      "gpu_temp_c": 51
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-26",
+    "sequence": 157,
+    "metrics": {
+      "cpu_load": 70.3,
+      "memory_gb": 33.27,
+      "gpu_temp_c": 48
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-07",
+    "sequence": 158,
+    "metrics": {
+      "cpu_load": 84.1,
+      "memory_gb": 37.58,
+      "gpu_temp_c": 73
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-07",
+    "sequence": 159,
+    "metrics": {
+      "cpu_load": 74.2,
+      "memory_gb": 28.74,
+      "gpu_temp_c": 59
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-26",
+    "sequence": 160,
+    "metrics": {
+      "cpu_load": 77.0,
+      "memory_gb": 57.69,
+      "gpu_temp_c": 61
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-12",
+    "sequence": 161,
+    "metrics": {
+      "cpu_load": 85.4,
+      "memory_gb": 61.0,
+      "gpu_temp_c": 52
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-30",
+    "sequence": 162,
+    "metrics": {
+      "cpu_load": 38.0,
+      "memory_gb": 29.34,
+      "gpu_temp_c": 71
+    },
+    "status": "DEGRADED"
+  },
+  {
+    "node_id": "worker-node-05",
+    "sequence": 163,
+    "metrics": {
+      "cpu_load": 76.7,
+      "memory_gb": 39.93,
+      "gpu_temp_c": 52
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-32",
+    "sequence": 164,
+    "metrics": {
+      "cpu_load": 63.8,
+      "memory_gb": 58.08,
+      "gpu_temp_c": 68
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-01",
+    "sequence": 165,
+    "metrics": {
+      "cpu_load": 89.2,
+      "memory_gb": 56.08,
+      "gpu_temp_c": 50
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-34",
+    "sequence": 166,
+    "metrics": {
+      "cpu_load": 23.2,
+      "memory_gb": 22.67,
+      "gpu_temp_c": 70
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-22",
+    "sequence": 167,
+    "metrics": {
+      "cpu_load": 58.5,
+      "memory_gb": 30.43,
+      "gpu_temp_c": 61
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-01",
+    "sequence": 168,
+    "metrics": {
+      "cpu_load": 82.4,
+      "memory_gb": 37.61,
+      "gpu_temp_c": 71
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-15",
+    "sequence": 169,
+    "metrics": {
+      "cpu_load": 80.3,
+      "memory_gb": 56.58,
+      "gpu_temp_c": 55
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-08",
+    "sequence": 170,
+    "metrics": {
+      "cpu_load": 92.9,
+      "memory_gb": 63.32,
+      "gpu_temp_c": 45
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-02",
+    "sequence": 171,
+    "metrics": {
+      "cpu_load": 65.8,
+      "memory_gb": 36.88,
+      "gpu_temp_c": 62
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-24",
+    "sequence": 172,
+    "metrics": {
+      "cpu_load": 46.1,
+      "memory_gb": 55.93,
+      "gpu_temp_c": 53
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-41",
+    "sequence": 173,
+    "metrics": {
+      "cpu_load": 64.4,
+      "memory_gb": 36.98,
+      "gpu_temp_c": 56
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-13",
+    "sequence": 174,
+    "metrics": {
+      "cpu_load": 87.2,
+      "memory_gb": 23.96,
+      "gpu_temp_c": 71
+    },
+    "status": "DEGRADED"
+  },
+  {
+    "node_id": "worker-node-33",
+    "sequence": 175,
+    "metrics": {
+      "cpu_load": 90.2,
+      "memory_gb": 9.79,
+      "gpu_temp_c": 49
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-32",
+    "sequence": 176,
+    "metrics": {
+      "cpu_load": 51.6,
+      "memory_gb": 51.42,
+      "gpu_temp_c": 57
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-45",
+    "sequence": 177,
+    "metrics": {
+      "cpu_load": 17.8,
+      "memory_gb": 62.08,
+      "gpu_temp_c": 65
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-08",
+    "sequence": 178,
+    "metrics": {
+      "cpu_load": 51.1,
+      "memory_gb": 60.84,
+      "gpu_temp_c": 63
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-02",
+    "sequence": 179,
+    "metrics": {
+      "cpu_load": 62.6,
+      "memory_gb": 29.75,
+      "gpu_temp_c": 67
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-39",
+    "sequence": 180,
+    "metrics": {
+      "cpu_load": 90.7,
+      "memory_gb": 40.5,
+      "gpu_temp_c": 55
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-04",
+    "sequence": 181,
+    "metrics": {
+      "cpu_load": 49.2,
+      "memory_gb": 11.97,
+      "gpu_temp_c": 77
+    },
+    "status": "DEGRADED"
+  },
+  {
+    "node_id": "worker-node-27",
+    "sequence": 182,
+    "metrics": {
+      "cpu_load": 86.5,
+      "memory_gb": 60.43,
+      "gpu_temp_c": 57
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-06",
+    "sequence": 183,
+    "metrics": {
+      "cpu_load": 19.4,
+      "memory_gb": 14.46,
+      "gpu_temp_c": 67
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-36",
+    "sequence": 184,
+    "metrics": {
+      "cpu_load": 29.0,
+      "memory_gb": 52.15,
+      "gpu_temp_c": 69
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-11",
+    "sequence": 185,
+    "metrics": {
+      "cpu_load": 83.7,
+      "memory_gb": 47.86,
+      "gpu_temp_c": 51
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-33",
+    "sequence": 186,
+    "metrics": {
+      "cpu_load": 13.1,
+      "memory_gb": 12.72,
+      "gpu_temp_c": 67
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-48",
+    "sequence": 187,
+    "metrics": {
+      "cpu_load": 88.2,
+      "memory_gb": 55.48,
+      "gpu_temp_c": 68
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-22",
+    "sequence": 188,
+    "metrics": {
+      "cpu_load": 30.1,
+      "memory_gb": 56.52,
+      "gpu_temp_c": 68
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-32",
+    "sequence": 189,
+    "metrics": {
+      "cpu_load": 35.9,
+      "memory_gb": 62.67,
+      "gpu_temp_c": 74
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-32",
+    "sequence": 190,
+    "metrics": {
+      "cpu_load": 66.5,
+      "memory_gb": 4.32,
+      "gpu_temp_c": 57
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-36",
+    "sequence": 191,
+    "metrics": {
+      "cpu_load": 94.1,
+      "memory_gb": 10.14,
+      "gpu_temp_c": 78
+    },
+    "status": "DEGRADED"
+  },
+  {
+    "node_id": "worker-node-15",
+    "sequence": 192,
+    "metrics": {
+      "cpu_load": 10.5,
+      "memory_gb": 45.75,
+      "gpu_temp_c": 77
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-28",
+    "sequence": 193,
+    "metrics": {
+      "cpu_load": 45.3,
+      "memory_gb": 18.71,
+      "gpu_temp_c": 64
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-35",
+    "sequence": 194,
+    "metrics": {
+      "cpu_load": 71.1,
+      "memory_gb": 38.94,
+      "gpu_temp_c": 53
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-35",
+    "sequence": 195,
+    "metrics": {
+      "cpu_load": 88.9,
+      "memory_gb": 55.71,
+      "gpu_temp_c": 47
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-11",
+    "sequence": 196,
+    "metrics": {
+      "cpu_load": 38.8,
+      "memory_gb": 21.72,
+      "gpu_temp_c": 62
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-35",
+    "sequence": 197,
+    "metrics": {
+      "cpu_load": 51.7,
+      "memory_gb": 20.2,
+      "gpu_temp_c": 77
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-44",
+    "sequence": 198,
+    "metrics": {
+      "cpu_load": 39.1,
+      "memory_gb": 54.71,
+      "gpu_temp_c": 64
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-46",
+    "sequence": 199,
+    "metrics": {
+      "cpu_load": 38.6,
+      "memory_gb": 50.32,
+      "gpu_temp_c": 58
+    },
+    "status": "HEALTHY"
+  },
+  {
+    "node_id": "worker-node-01",
+    "sequence": 200,
+    "metrics": {
+      "cpu_load": 76.2,
+      "memory_gb": 43.4,
+      "gpu_temp_c": 82
+    },
+    "status": "HEALTHY"
+  }
+]

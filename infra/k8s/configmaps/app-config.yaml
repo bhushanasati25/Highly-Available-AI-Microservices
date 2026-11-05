@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hams-app-config
+  namespace: hams-prod
+data:
+  HAMS_ENVIRONMENT: "prod"
+  HAMS_LOG_LEVEL: "INFO"
+  HAMS_REDIS_HOST: "hams-redis"
+  HAMS_REDIS_PORT: "6379"
+  HAMS_POSTGRES_HOST: "hams-postgres"
+  HAMS_POSTGRES_PORT: "5432"
+  HAMS_POSTGRES_DB: "hams"
+  HAMS_POSTGRES_USER: "hams"
+  HAMS_RABBITMQ_HOST: "hams-rabbitmq"
+  HAMS_RABBITMQ_PORT: "5672"
+  HAMS_DATA_INGESTION_GRPC: "data-ingestion:50051"
+  HAMS_PREPROCESSING_GRPC: "preprocessing:50052"
+  HAMS_STORAGE_MANAGER_URL: "http://storage-manager:8083"
+  HAMS_TRAINING_ORCHESTRATOR_URL: "http://training-orchestrator:8084"
+  HAMS_MODEL_MANAGER_URL: "http://model-manager:8085"
+  HAMS_MONITORING_URL: "http://monitoring:8086"
+  HAMS_SCHEDULER_URL: "http://scheduler:8087"

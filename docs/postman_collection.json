@@ -1,0 +1,169 @@
+{
+  "info": {
+    "name": "HAMS: Highly Available AI Microservices API",
+    "description": "Comprehensive Postman Collection for testing all HAMS microservices",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Generate Bearer Token",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:8080/api/v1/auth/token?username=admin"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Data Ingestion",
+      "item": [
+        {
+          "name": "Submit Ingest Job",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"source_id\": \"s3://ai-data/raw.csv\",\n  \"format\": \"CSV\",\n  \"data_payload\": \"f1,f2\\n1.0,2.0\\n3.0,4.0\"\n}"
+            },
+            "url": "http://localhost:8080/api/v1/ingest"
+          }
+        },
+        {
+          "name": "Get Ingest Status",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/v1/ingest/job-sample-123"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Training Orchestration",
+      "item": [
+        {
+          "name": "Submit Training Job",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model_type\": \"transformer-7b\",\n  \"dataset_id\": \"ds-clean-v1\",\n  \"priority\": 8,\n  \"required_gpu\": 1,\n  \"required_cpu\": 4.0,\n  \"required_memory_gb\": 16.0\n}"
+            },
+            "url": "http://localhost:8084/jobs"
+          }
+        },
+        {
+          "name": "List Training Jobs",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8084/jobs"
+          }
+        },
+        {
+          "name": "List Compute Nodes",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8084/nodes"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Model Registry",
+      "item": [
+        {
+          "name": "Register Model",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"vision-transformer\",\n  \"framework\": \"pytorch\",\n  \"description\": \"ViT Backbone\"\n}"
+            },
+            "url": "http://localhost:8085/models"
+          }
+        },
+        {
+          "name": "List Models",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8085/models"
+          }
+        }
+      ]
+    },
+    {
+      "name": "50-Node Workload Rescheduler",
+      "item": [
+        {
+          "name": "Get Cluster Capacity & Status",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8087/api/v1/cluster/status"
+          }
+        },
+        {
+          "name": "List 50 Cluster Nodes",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8087/api/v1/cluster/nodes"
+          }
+        },
+        {
+          "name": "Schedule Workload",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"fine-tuning-bert\",\n  \"required_cpu\": 4.0,\n  \"required_memory\": 16.0,\n  \"priority\": 8,\n  \"algorithm\": \"LEAST_LOADED\"\n}"
+            },
+            "url": "http://localhost:8087/api/v1/workloads"
+          }
+        },
+        {
+          "name": "Simulate Node Hardware Failure",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"node_id\": \"node-005\"\n}"
+            },
+            "url": "http://localhost:8087/api/v1/simulate/failure"
+          }
+        },
+        {
+          "name": "Recover Node",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:8087/api/v1/simulate/recovery/node-005"
+          }
+        }
+      ]
+    },
+    {
+      "name": "System Health & Observability",
+      "item": [
+        {
+          "name": "Aggregated System Health",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/v1/system/health"
+          }
+        },
+        {
+          "name": "Prometheus Metrics",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/metrics"
+          }
+        }
+      ]
+    }
+  ]
+}

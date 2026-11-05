@@ -1,0 +1,81 @@
+name: CD Pipeline - Azure AKS Deployment
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+env:
+  ACR_NAME: ${{ secrets.AZURE_ACR_NAME || 'hamsacr' }}
+  CLUSTER_NAME: ${{ secrets.AZURE_AKS_CLUSTER_NAME || 'hams-aks-cluster' }}
+  RESOURCE_GROUP: ${{ secrets.AZURE_RESOURCE_GROUP || 'hams-rg' }}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Log in to Azure Container Registry
+        run: az acr login --name ${{ env.ACR_NAME }}
+      - name: Build & Push Images
+        run: |
+          TAG=${GITHUB_REF#refs/tags/}
+          for SVC in data-ingestion preprocessing storage-manager api-gateway training-orchestrator model-manager monitoring; do
+            IMAGE="${{ env.ACR_NAME }}.azurecr.io/hams/${SVC}:${TAG}"
+            docker build -t $IMAGE -f services/${SVC}/Dockerfile .
+            docker push $IMAGE
+          done
+          # Scheduler image
+          SCHED_IMAGE="${{ env.ACR_NAME }}.azurecr.io/hams/scheduler:${TAG}"
+          docker build -t $SCHED_IMAGE -f scheduler/Dockerfile .
+          docker push $SCHED_IMAGE
+
+  deploy-staging:
+    needs: build-and-push
+    runs-on: ubuntu-22.04
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Set AKS Context
+        uses: azure/aks-set-context@v4
+        with:
+          resource-group: ${{ env.RESOURCE_GROUP }}
+          cluster-name: ${{ env.CLUSTER_NAME }}
+      - name: Deploy to Staging Namespace
+        run: |
+          kubectl apply -f infra/k8s/namespace.yaml
+          kubectl apply -n hams-staging -f infra/k8s/configmaps/
+          kubectl apply -n hams-staging -f infra/k8s/services/
+          kubectl apply -n hams-staging -f infra/k8s/deployments/
+          kubectl rollout status deployment/api-gateway -n hams-staging --timeout=180s
+
+  deploy-production:
+    needs: deploy-staging
+    runs-on: ubuntu-22.04
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Set AKS Context
+        uses: azure/aks-set-context@v4
+        with:
+          resource-group: ${{ env.RESOURCE_GROUP }}
+          cluster-name: ${{ env.CLUSTER_NAME }}
+      - name: Blue-Green Rolling Production Deployment
+        run: |
+          kubectl apply -n hams-prod -f infra/k8s/configmaps/
+          kubectl apply -n hams-prod -f infra/k8s/services/
+          kubectl apply -n hams-prod -f infra/k8s/deployments/
+          kubectl rollout status deployment/api-gateway -n hams-prod --timeout=300s
+          kubectl rollout status deployment/scheduler -n hams-prod --timeout=300s

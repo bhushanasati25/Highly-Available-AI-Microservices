@@ -1,0 +1,85 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 1,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+      "id": 100,
+      "title": "50-Node Cluster Health & Rescheduling Telemetry",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 40 },
+              { "color": "green", "value": 48 }
+            ]
+          }
+        }
+      },
+      "gridPos": { "h": 6, "w": 6, "x": 0, "y": 1 },
+      "id": 1,
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] } },
+      "title": "Active Compute Nodes",
+      "type": "stat",
+      "targets": [{ "expr": "hams_cluster_active_nodes", "legendFormat": "Active Nodes" }]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 6, "w": 6, "x": 6, "y": 1 },
+      "id": 2,
+      "title": "System Throughput (QPS)",
+      "type": "gauge",
+      "targets": [{ "expr": "rate(hams_requests_total[1m])", "legendFormat": "QPS" }]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 6, "w": 12, "x": 12, "y": 1 },
+      "id": 3,
+      "title": "P99 Service Latency Distribution",
+      "type": "timeseries",
+      "targets": [{ "expr": "histogram_quantile(0.99, sum(rate(hams_request_latency_seconds_bucket[5m])) by (le, service))", "legendFormat": "{{service}} p99" }]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 7 },
+      "id": 101,
+      "title": "Distributed C++ Pipelines & Sharding Metrics",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "id": 4,
+      "title": "Data Ingestion Influx (Bytes/sec)",
+      "type": "timeseries",
+      "targets": [{ "expr": "rate(ingestion_bytes_total[1m])", "legendFormat": "Bytes/sec" }]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "id": 5,
+      "title": "Storage Objects Shard Distribution",
+      "type": "timeseries",
+      "targets": [{ "expr": "storage_objects_total", "legendFormat": "Total Objects" }]
+    }
+  ],
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["hams", "microservices", "ai-pipeline", "distributed-systems"],
+  "time": { "from": "now-1h", "to": "now" },
+  "title": "HAMS: Highly Available AI Microservices Dashboard",
+  "version": 1
+}

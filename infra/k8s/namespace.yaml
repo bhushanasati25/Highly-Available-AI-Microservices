@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hams-dev
+  labels:
+    environment: dev
+    app: hams
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hams-staging
+  labels:
+    environment: staging
+    app: hams
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hams-prod
+  labels:
+    environment: prod
+    app: hams

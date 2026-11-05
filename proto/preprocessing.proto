@@ -1,0 +1,196 @@
+// =============================================================================
+// preprocessing.proto
+//
+// Defines the PreprocessingService and its associated messages.  This service
+// manages multi-stage data-processing pipelines — cleaning, transforming, and
+// extracting features from ingested datasets before they are fed into training.
+// =============================================================================
+
+syntax = "proto3";
+
+package hams;
+
+option go_package = "github.com/hams/proto/preprocessing";
+option java_package = "com.hams.proto.preprocessing";
+
+import "common.proto";
+
+// ---------------------------------------------------------------------------
+// PreprocessingService — orchestrates data transformation and feature
+// extraction pipelines.  ProcessData returns a server-side stream so the
+// client can observe per-stage progress in real time.
+// ---------------------------------------------------------------------------
+service PreprocessingService {
+  // ProcessData launches a multi-stage processing pipeline and streams
+  // per-stage progress updates back to the client.
+  rpc ProcessData(ProcessRequest) returns (stream ProcessResponse);
+
+  // ExtractFeatures computes a feature matrix from the given dataset
+  // according to the supplied configuration.
+  rpc ExtractFeatures(FeatureRequest) returns (FeatureResponse);
+
+  // GetPipelineStatus retrieves the current state of an active or completed
+  // pipeline execution.
+  rpc GetPipelineStatus(PipelineStatusRequest) returns (PipelineStatusResponse);
+}
+
+// ---------------------------------------------------------------------------
+// ProcessRequest — input parameters for a processing pipeline run.
+// ---------------------------------------------------------------------------
+message ProcessRequest {
+  // Identifier of the ingestion job whose data should be processed.
+  string job_id = 1;
+
+  // Configuration describing the ordered stages of the pipeline.
+  PipelineConfig pipeline_config = 2;
+
+  // Path (URI or local) to the input dataset.
+  string input_path = 3;
+
+  // Destination path where the processed output will be written.
+  string output_path = 4;
+}
+
+// ---------------------------------------------------------------------------
+// ProcessResponse — a streamed update emitted once per pipeline stage.
+// ---------------------------------------------------------------------------
+message ProcessResponse {
+  // Name of the pipeline stage that produced this update.
+  string stage = 1;
+
+  // Progress of the current stage as a fraction in [0.0, 1.0].
+  double progress = 2;
+
+  // Path to the intermediate or final output of this stage.
+  string output_path = 3;
+
+  // Status of the current stage.
+  Status status = 4;
+
+  // Optional human-readable message (e.g. warning or informational note).
+  string message = 5;
+}
+
+// ---------------------------------------------------------------------------
+// FeatureRequest — input parameters for a feature-extraction run.
+// ---------------------------------------------------------------------------
+message FeatureRequest {
+  // Identifier of the dataset from which features should be extracted.
+  string data_id = 1;
+
+  // Configuration controlling which features to compute.
+  FeatureConfig feature_config = 2;
+
+  // Path to the input data.
+  string input_path = 3;
+}
+
+// ---------------------------------------------------------------------------
+// FeatureResponse — result of a feature-extraction run.
+// ---------------------------------------------------------------------------
+message FeatureResponse {
+  // Identifiers of the extracted feature columns / vectors.
+  repeated string feature_ids = 1;
+
+  // Dimensionality of the resulting feature matrix.
+  int32 dimensions = 2;
+
+  // Path where the feature matrix has been persisted.
+  string output_path = 3;
+
+  // Outcome status of the extraction.
+  Status status = 4;
+}
+
+// ---------------------------------------------------------------------------
+// FeatureConfig — controls which feature types to extract and how.
+// ---------------------------------------------------------------------------
+message FeatureConfig {
+  // List of feature types to compute (e.g. "tfidf", "embedding", "pca").
+  repeated string feature_types = 1;
+
+  // Target number of dimensions after dimensionality reduction.
+  int32 target_dimensions = 2;
+
+  // Whether to normalise the resulting feature vectors.
+  bool normalize = 3;
+}
+
+// ---------------------------------------------------------------------------
+// PipelineConfig — describes an ordered sequence of processing stages.
+// ---------------------------------------------------------------------------
+message PipelineConfig {
+  // Ordered list of stage configurations.
+  repeated StageConfig stages = 1;
+
+  // Whether independent stages may execute in parallel.
+  bool parallel = 2;
+
+  // Number of records to process per micro-batch within each stage.
+  int32 batch_size = 3;
+
+  // Maximum number of concurrent worker threads / processes.
+  int32 max_workers = 4;
+}
+
+// ---------------------------------------------------------------------------
+// StageConfig — configuration for a single processing stage.
+// ---------------------------------------------------------------------------
+message StageConfig {
+  // Human-readable name of this stage (e.g. "tokenize", "normalize").
+  string name = 1;
+
+  // Stage implementation type (maps to a registered processor).
+  string type = 2;
+
+  // Arbitrary key-value parameters forwarded to the stage processor.
+  map<string, string> parameters = 3;
+
+  // Execution order (lower values run first).
+  int32 order = 4;
+}
+
+// ---------------------------------------------------------------------------
+// PipelineStatusRequest — identifies the pipeline whose status is queried.
+// ---------------------------------------------------------------------------
+message PipelineStatusRequest {
+  // Job identifier of the pipeline run.
+  string job_id = 1;
+}
+
+// ---------------------------------------------------------------------------
+// PipelineStatusResponse — aggregate status of a pipeline execution.
+// ---------------------------------------------------------------------------
+message PipelineStatusResponse {
+  // Job identifier.
+  string job_id = 1;
+
+  // Overall pipeline status.
+  Status status = 2;
+
+  // Per-stage status breakdown.
+  repeated StageStatus stages = 3;
+
+  // Overall progress as a fraction in [0.0, 1.0].
+  double overall_progress = 4;
+}
+
+// ---------------------------------------------------------------------------
+// StageStatus — runtime status of a single pipeline stage.
+// ---------------------------------------------------------------------------
+message StageStatus {
+  // Name of the stage.
+  string name = 1;
+
+  // Current status of this stage.
+  Status status = 2;
+
+  // Progress of this stage as a fraction in [0.0, 1.0].
+  double progress = 3;
+
+  // Number of records this stage has processed so far.
+  int64 records_processed = 4;
+
+  // Error messages emitted by this stage.
+  repeated string errors = 5;
+}

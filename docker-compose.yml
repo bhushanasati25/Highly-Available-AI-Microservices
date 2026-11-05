@@ -1,0 +1,367 @@
+# =============================================================================
+# HAMS - Highly Available AI Microservices
+# Docker Compose - Development Configuration
+# =============================================================================
+
+version: "3.9"
+
+services:
+  # ---------------------------------------------------------------------------
+  # Infrastructure Services
+  # ---------------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: hams-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - hams-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: hams-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: hams
+      POSTGRES_USER: hams
+      POSTGRES_PASSWORD: hams_dev_password
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - hams-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hams -d hams"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: hams-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: hams
+      RABBITMQ_DEFAULT_PASS: hams_dev_password
+      RABBITMQ_DEFAULT_VHOST: hams
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - hams-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # ---------------------------------------------------------------------------
+  # Application Services
+  # ---------------------------------------------------------------------------
+  data-ingestion:
+    build:
+      context: .
+      dockerfile: services/data-ingestion/Dockerfile
+    container_name: hams-data-ingestion
+    ports:
+      - "50051:50051"
+      - "8081:8081"
+    environment:
+      HAMS_SERVICE_NAME: data-ingestion
+      HAMS_GRPC_PORT: "50051"
+      HAMS_HEALTH_PORT: "8081"
+      HAMS_REDIS_HOST: redis
+      HAMS_REDIS_PORT: "6379"
+      HAMS_RABBITMQ_HOST: rabbitmq
+      HAMS_RABBITMQ_PORT: "5672"
+      HAMS_RABBITMQ_USER: hams
+      HAMS_RABBITMQ_PASS: hams_dev_password
+      HAMS_RABBITMQ_VHOST: hams
+      HAMS_LOG_LEVEL: debug
+      HAMS_ENVIRONMENT: development
+    depends_on:
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - hams-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8081/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  preprocessing:
+    build:
+      context: .
+      dockerfile: services/preprocessing/Dockerfile
+    container_name: hams-preprocessing
+    ports:
+      - "50052:50052"
+      - "8082:8082"
+    environment:
+      HAMS_SERVICE_NAME: preprocessing
+      HAMS_GRPC_PORT: "50052"
+      HAMS_HEALTH_PORT: "8082"
+      HAMS_REDIS_HOST: redis
+      HAMS_REDIS_PORT: "6379"
+      HAMS_LOG_LEVEL: debug
+      HAMS_ENVIRONMENT: development
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - hams-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8082/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  storage-manager:
+    build:
+      context: .
+      dockerfile: services/storage-manager/Dockerfile
+    container_name: hams-storage-manager
+    ports:
+      - "50053:50053"
+      - "8083:8083"
+    environment:
+      HAMS_SERVICE_NAME: storage-manager
+      HAMS_GRPC_PORT: "50053"
+      HAMS_HEALTH_PORT: "8083"
+      HAMS_POSTGRES_HOST: postgres
+      HAMS_POSTGRES_PORT: "5432"
+      HAMS_POSTGRES_DB: hams
+      HAMS_POSTGRES_USER: hams
+      HAMS_POSTGRES_PASSWORD: hams_dev_password
+      HAMS_LOG_LEVEL: debug
+      HAMS_ENVIRONMENT: development
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - hams-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8083/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: services/api-gateway/Dockerfile
+    container_name: hams-api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      HAMS_SERVICE_NAME: api-gateway
+      HAMS_HTTP_PORT: "8080"
+      HAMS_REDIS_HOST: redis
+      HAMS_REDIS_PORT: "6379"
+      HAMS_DATA_INGESTION_HOST: data-ingestion
+      HAMS_DATA_INGESTION_GRPC_PORT: "50051"
+      HAMS_TRAINING_ORCHESTRATOR_HOST: training-orchestrator
+      HAMS_TRAINING_ORCHESTRATOR_PORT: "8084"
+      HAMS_MODEL_MANAGER_HOST: model-manager
+      HAMS_MODEL_MANAGER_PORT: "8085"
+      HAMS_PREPROCESSING_HOST: preprocessing
+      HAMS_PREPROCESSING_GRPC_PORT: "50052"
+      HAMS_STORAGE_MANAGER_HOST: storage-manager
+      HAMS_STORAGE_MANAGER_GRPC_PORT: "50053"
+      HAMS_LOG_LEVEL: debug
+      HAMS_ENVIRONMENT: development
+      HAMS_JWT_SECRET: dev-jwt-secret-change-in-production
+      HAMS_RATE_LIMIT_RPS: "100"
+    depends_on:
+      redis:
+        condition: service_healthy
+      data-ingestion:
+        condition: service_healthy
+      training-orchestrator:
+        condition: service_healthy
+      model-manager:
+        condition: service_healthy
+    networks:
+      - hams-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8080/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  training-orchestrator:
+    build:
+      context: .
+      dockerfile: services/training-orchestrator/Dockerfile
+    container_name: hams-training-orchestrator
+    ports:
+      - "8084:8084"
+    environment:
+      HAMS_SERVICE_NAME: training-orchestrator
+      HAMS_HTTP_PORT: "8084"
+      HAMS_REDIS_HOST: redis
+      HAMS_REDIS_PORT: "6379"
+      HAMS_RABBITMQ_HOST: rabbitmq
+      HAMS_RABBITMQ_PORT: "5672"
+      HAMS_RABBITMQ_USER: hams
+      HAMS_RABBITMQ_PASS: hams_dev_password
+      HAMS_RABBITMQ_VHOST: hams
+      HAMS_POSTGRES_HOST: postgres
+      HAMS_POSTGRES_PORT: "5432"
+      HAMS_POSTGRES_DB: hams
+      HAMS_POSTGRES_USER: hams
+      HAMS_POSTGRES_PASSWORD: hams_dev_password
+      HAMS_LOG_LEVEL: debug
+      HAMS_ENVIRONMENT: development
+    depends_on:
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    networks:
+      - hams-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8084/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  model-manager:
+    build:
+      context: .
+      dockerfile: services/model-manager/Dockerfile
+    container_name: hams-model-manager
+    ports:
+      - "8085:8085"
+    environment:
+      HAMS_SERVICE_NAME: model-manager
+      HAMS_HTTP_PORT: "8085"
+      HAMS_REDIS_HOST: redis
+      HAMS_REDIS_PORT: "6379"
+      HAMS_POSTGRES_HOST: postgres
+      HAMS_POSTGRES_PORT: "5432"
+      HAMS_POSTGRES_DB: hams
+      HAMS_POSTGRES_USER: hams
+      HAMS_POSTGRES_PASSWORD: hams_dev_password
+      HAMS_LOG_LEVEL: debug
+      HAMS_ENVIRONMENT: development
+    depends_on:
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    networks:
+      - hams-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8085/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  monitoring:
+    build:
+      context: .
+      dockerfile: services/monitoring/Dockerfile
+    container_name: hams-monitoring
+    ports:
+      - "8086:8086"
+    environment:
+      HAMS_SERVICE_NAME: monitoring
+      HAMS_HTTP_PORT: "8086"
+      HAMS_REDIS_HOST: redis
+      HAMS_REDIS_PORT: "6379"
+      HAMS_LOG_LEVEL: debug
+      HAMS_ENVIRONMENT: development
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - hams-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8086/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  scheduler:
+    build:
+      context: .
+      dockerfile: scheduler/Dockerfile
+    container_name: hams-scheduler
+    ports:
+      - "8087:8087"
+    environment:
+      HAMS_SERVICE_NAME: scheduler
+      HAMS_HTTP_PORT: "8087"
+      HAMS_REDIS_HOST: redis
+      HAMS_REDIS_PORT: "6379"
+      HAMS_LOG_LEVEL: debug
+      HAMS_ENVIRONMENT: development
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - hams-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8087/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+# =============================================================================
+# Volumes
+# =============================================================================
+volumes:
+  redis-data:
+    driver: local
+  postgres-data:
+    driver: local
+  rabbitmq-data:
+    driver: local
+
+# =============================================================================
+# Networks
+# =============================================================================
+networks:
+  hams-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16

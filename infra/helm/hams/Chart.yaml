@@ -1,0 +1,8 @@
+apiVersion: v2
+name: hams
+description: Helm chart for Highly Available AI Microservices Platform
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+maintainers:
+  - name: DeepMind Agentic Engineering Team

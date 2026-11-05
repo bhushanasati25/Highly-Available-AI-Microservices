@@ -1,0 +1,134 @@
+// =============================================================================
+// common.proto
+//
+// Common message types and enums shared across all Highly Available AI
+// Microservices (HAMS). This file defines fundamental building blocks such as
+// timestamps, status codes, node metadata, chunked data transfer, and
+// standardised error responses.
+// =============================================================================
+
+syntax = "proto3";
+
+package hams;
+
+option go_package = "github.com/hams/proto/common";
+option java_package = "com.hams.proto.common";
+
+// ---------------------------------------------------------------------------
+// Timestamp — a point in time expressed as seconds and nanoseconds since the
+// Unix epoch (1970-01-01T00:00:00Z).  Mirrors google.protobuf.Timestamp
+// semantics while keeping the project dependency-free.
+// ---------------------------------------------------------------------------
+message Timestamp {
+  // Seconds of UTC time since Unix epoch.
+  int64 seconds = 1;
+
+  // Non-negative fractions of a second at nanosecond resolution.
+  // Must be from 0 to 999,999,999.
+  int32 nanos = 2;
+}
+
+// ---------------------------------------------------------------------------
+// Status — canonical status codes used throughout the platform to communicate
+// the high-level outcome of an operation or the current state of a resource.
+// ---------------------------------------------------------------------------
+enum Status {
+  // The operation completed successfully or the resource is healthy.
+  OK = 0;
+
+  // The operation failed or the resource is in an error state.
+  ERROR = 1;
+
+  // The operation has been accepted but has not yet started.
+  PENDING = 2;
+
+  // The operation is currently in progress.
+  PROCESSING = 3;
+}
+
+// ---------------------------------------------------------------------------
+// HealthCheckRequest — sent to any service to query its health status.
+// ---------------------------------------------------------------------------
+message HealthCheckRequest {
+  // Fully-qualified name of the service to check (e.g. "hams.TrainingService").
+  string service_name = 1;
+}
+
+// ---------------------------------------------------------------------------
+// HealthCheckResponse — returned by any service to report its health.
+// ---------------------------------------------------------------------------
+message HealthCheckResponse {
+  // Current health status of the service.
+  Status status = 1;
+
+  // Name of the service that produced this response.
+  string service_name = 2;
+
+  // Number of seconds the service has been running since last restart.
+  double uptime_seconds = 3;
+
+  // Wall-clock time when this response was generated.
+  Timestamp timestamp = 4;
+}
+
+// ---------------------------------------------------------------------------
+// NodeInfo — metadata describing a single compute node in the cluster.
+// ---------------------------------------------------------------------------
+message NodeInfo {
+  // Unique identifier of the node (e.g. UUID or hostname).
+  string node_id = 1;
+
+  // IP address or DNS name where the node can be reached.
+  string address = 2;
+
+  // Port number on which the node's gRPC endpoint is listening.
+  int32 port = 3;
+
+  // Current operational status of the node.
+  Status status = 4;
+
+  // Current CPU utilisation as a fraction in [0.0, 1.0].
+  double cpu_usage = 5;
+
+  // Current memory utilisation as a fraction in [0.0, 1.0].
+  double memory_usage = 6;
+
+  // Whether at least one GPU is available on this node.
+  bool gpu_available = 7;
+}
+
+// ---------------------------------------------------------------------------
+// DataChunk — a single chunk of a larger binary payload, used for streaming
+// uploads and downloads.  The receiver reassembles chunks ordered by offset.
+// ---------------------------------------------------------------------------
+message DataChunk {
+  // Unique identifier for this chunk within its parent transfer.
+  string chunk_id = 1;
+
+  // Raw binary payload of this chunk.
+  bytes data = 2;
+
+  // Byte offset of this chunk within the complete payload.
+  int64 offset = 3;
+
+  // Total size of the complete payload in bytes.
+  int64 total_size = 4;
+
+  // Hex-encoded checksum (e.g. SHA-256) of the chunk data for integrity
+  // verification.
+  string checksum = 5;
+}
+
+// ---------------------------------------------------------------------------
+// ErrorResponse — a structured error payload returned when an RPC fails.
+// ---------------------------------------------------------------------------
+message ErrorResponse {
+  // Application-specific numeric error code.
+  int32 code = 1;
+
+  // Human-readable summary of the error.
+  string message = 2;
+
+  // Optional additional detail (stack trace, request ID, etc.).
+  string details = 3;
+}

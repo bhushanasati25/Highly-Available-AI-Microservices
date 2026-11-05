@@ -1,0 +1,93 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  lint-cpp:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install clang-format
+        run: sudo apt-get update && sudo apt-get install -y clang-format
+      - name: Run Clang-Format check
+        run: |
+          find shared/cpp services/data-ingestion services/preprocessing services/storage-manager -name "*.cpp" -o -name "*.h" | xargs clang-format --dry-run --Werror
+
+  lint-python:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install ruff
+        run: pip install ruff
+      - name: Run Ruff Linter
+        run: ruff check .
+
+  test-cpp:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install C++ Dependencies
+        run: |
+          sudo apt-get update && sudo apt-get install -y \
+            build-essential cmake libprotobuf-dev protobuf-compiler \
+            libgrpc++-dev protobuf-compiler-grpc libspdlog-dev \
+            nlohmann-json3-dev libgtest-dev
+      - name: Build & Test Shared Library
+        run: |
+          mkdir -p shared/cpp/build && cd shared/cpp/build
+          cmake .. && make -j$(nproc)
+      - name: Build & Test Data Ingestion Service
+        run: |
+          mkdir -p services/data-ingestion/build && cd services/data-ingestion/build
+          cmake .. && make -j$(nproc) && ctest --output-on-failure
+      - name: Build & Test Preprocessing Service
+        run: |
+          mkdir -p services/preprocessing/build && cd services/preprocessing/build
+          cmake .. && make -j$(nproc) && ctest --output-on-failure
+      - name: Build & Test Storage Manager Service
+        run: |
+          mkdir -p services/storage-manager/build && cd services/storage-manager/build
+          cmake .. && make -j$(nproc) && ctest --output-on-failure
+
+  test-python:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          pip install -e shared/python/
+          pip install -r services/api-gateway/requirements.txt
+          pip install -r services/training-orchestrator/requirements.txt
+          pip install -r services/model-manager/requirements.txt
+          pip install -r services/monitoring/requirements.txt
+          pip install -r scheduler/requirements.txt
+          pip install pytest pytest-asyncio pytest-cov
+      - name: Run Test Suites with Coverage
+        run: |
+          pytest scheduler/tests \
+                 services/api-gateway/tests \
+                 services/training-orchestrator/tests \
+                 services/model-manager/tests \
+                 services/monitoring/tests \
+                 --cov=. --cov-report=xml
+
+  build-images:
+    needs: [test-cpp, test-python]
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build Docker Images
+        run: |
+          docker compose build --parallel

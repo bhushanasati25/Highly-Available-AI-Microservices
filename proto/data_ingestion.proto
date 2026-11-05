@@ -1,0 +1,166 @@
+// =============================================================================
+// data_ingestion.proto
+//
+// Defines the DataIngestionService and its associated messages.  This service
+// is responsible for streaming raw data into the platform, tracking ingestion
+// jobs, and validating incoming datasets against registered schemas.
+// =============================================================================
+
+syntax = "proto3";
+
+package hams;
+
+option go_package = "github.com/hams/proto/data_ingestion";
+option java_package = "com.hams.proto.data_ingestion";
+
+import "common.proto";
+
+// ---------------------------------------------------------------------------
+// DataIngestionService — the primary interface for pushing data into the
+// platform.  Clients stream DataChunks for large uploads, poll ingestion
+// status, and validate datasets before committing them.
+// ---------------------------------------------------------------------------
+service DataIngestionService {
+  // IngestData streams binary data chunks from the client to the server and
+  // returns a summary once the stream completes.
+  rpc IngestData(stream DataChunk) returns (IngestResponse);
+
+  // GetIngestionStatus queries the current progress of a previously submitted
+  // ingestion job.
+  rpc GetIngestionStatus(StatusRequest) returns (StatusResponse);
+
+  // ValidateData checks a dataset against a registered schema and returns
+  // any validation errors found.
+  rpc ValidateData(ValidationRequest) returns (ValidationResponse);
+}
+
+// ---------------------------------------------------------------------------
+// DataFormat — the serialisation format of the ingested dataset.
+// ---------------------------------------------------------------------------
+enum DataFormat {
+  // Comma-separated values.
+  CSV = 0;
+
+  // JSON (newline-delimited or array).
+  JSON = 1;
+
+  // Apache Parquet columnar format.
+  PARQUET = 2;
+
+  // Opaque binary blob — the schema must describe the layout.
+  BINARY = 3;
+}
+
+// ---------------------------------------------------------------------------
+// IngestRequest — initial metadata sent alongside (or before) the data stream
+// to describe the incoming dataset.
+// ---------------------------------------------------------------------------
+message IngestRequest {
+  // Identifier of the upstream data source.
+  string source_id = 1;
+
+  // Format of the data being ingested.
+  DataFormat format = 2;
+
+  // Arbitrary key-value metadata (e.g. "origin", "version").
+  map<string, string> metadata = 3;
+
+  // Identifier of the schema to validate against (empty to skip validation).
+  string schema_id = 4;
+}
+
+// ---------------------------------------------------------------------------
+// IngestResponse — returned after a streaming ingestion completes.
+// ---------------------------------------------------------------------------
+message IngestResponse {
+  // Server-assigned identifier for the ingestion job.
+  string job_id = 1;
+
+  // Overall status of the ingestion.
+  Status status = 2;
+
+  // Number of logical records successfully processed.
+  int64 records_processed = 3;
+
+  // Human-readable error messages for records that failed.
+  repeated string errors = 4;
+
+  // Total number of bytes received from the client stream.
+  int64 bytes_received = 5;
+}
+
+// ---------------------------------------------------------------------------
+// StatusRequest — identifies an ingestion job whose status is being queried.
+// ---------------------------------------------------------------------------
+message StatusRequest {
+  // Job identifier returned by IngestData.
+  string job_id = 1;
+}
+
+// ---------------------------------------------------------------------------
+// StatusResponse — current state and progress of an ingestion job.
+// ---------------------------------------------------------------------------
+message StatusResponse {
+  // Job identifier.
+  string job_id = 1;
+
+  // Current status of the job.
+  Status status = 2;
+
+  // Overall progress as a fraction in [0.0, 1.0].
+  double progress = 3;
+
+  // Number of records processed so far.
+  int64 records_processed = 4;
+
+  // Number of records that produced errors.
+  int32 error_count = 5;
+
+  // Timestamp when the job started.
+  Timestamp start_time = 6;
+
+  // Timestamp when the job ended (zero-value if still running).
+  Timestamp end_time = 7;
+}
+
+// ---------------------------------------------------------------------------
+// ValidationRequest — asks the server to validate a dataset against a schema.
+// ---------------------------------------------------------------------------
+message ValidationRequest {
+  // Job identifier for traceability.
+  string job_id = 1;
+
+  // Schema to validate against.
+  string schema_id = 2;
+
+  // Raw data to validate.
+  bytes data = 3;
+
+  // Format of the supplied data.
+  DataFormat format = 4;
+}
+
+// ---------------------------------------------------------------------------
+// ValidationResponse — result of a validation check.
+// ---------------------------------------------------------------------------
+message ValidationResponse {
+  // True if the data conforms to the schema with no errors.
+  bool valid = 1;
+
+  // List of validation errors (empty when valid is true).
+  repeated ValidationError errors = 2;
+}
+
+// ---------------------------------------------------------------------------
+// ValidationError — a single validation issue found in the dataset.
+// ---------------------------------------------------------------------------
+message ValidationError {
+  // Name or path of the field that failed validation.
+  string field = 1;
+
+  // Human-readable description of the error.
+  string message = 2;
+
+  // Severity level (e.g. "ERROR", "WARNING", "INFO").
+  string severity = 3;
+}
