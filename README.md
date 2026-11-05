@@ -878,6 +878,7 @@ make deploy-aks
 
 ## Documentation
 
+- [Microsoft Technical Interview Masterclass & System Guide](docs/MICROSOFT_INTERVIEW_PREP.md)
 - [Architecture Specification](docs/architecture.md)
 - [Complete API Reference](docs/api-reference.md)
 - [Azure AKS Deployment & Operations Guide](docs/deployment-guide.md)
