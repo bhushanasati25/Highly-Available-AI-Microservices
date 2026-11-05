@@ -83,6 +83,12 @@ jobs:
                  services/monitoring/tests \
                  tests/integration/ \
                  --cov=. --cov-report=xml
+      - name: Run E2E 6-Stage Pipeline & 50-Node Failover Demo
+        run: python3 scripts/demo_pipeline.py
+      - name: Run Concurrency & Latency Benchmark
+        run: python3 scripts/benchmark_concurrency.py 50
+      - name: Run 50-Node Chaos Engineering Simulation
+        run: python3 scripts/chaos_simulation.py
 
   build-images:
     needs: [test-cpp, test-python]

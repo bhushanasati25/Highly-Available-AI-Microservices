@@ -1,0 +1,29 @@
+name: 🚀 Feature Request
+description: Suggest an idea or enhancement for HAMS microservices
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have an idea for improving the Distributed AI Microservices platform? We'd love to hear it!
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement / Motivation
+      description: Is your feature request related to a problem or architectural bottleneck?
+      placeholder: "e.g., I'm always frustrated when..."
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution / Architecture
+      description: Describe your proposed design or feature.
+      placeholder: "Describe how this should work and which microservices are involved."
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternative Solutions Considered
+      description: Any alternative implementations or workarounds considered?
