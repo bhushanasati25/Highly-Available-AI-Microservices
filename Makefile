@@ -1,4 +1,4 @@
-.PHONY: all build up down logs restart clean test test-cpp test-python lint proto health status demo cli
+.PHONY: all build up down logs restart clean test test-cpp test-python test-integration benchmark chaos lint proto health status demo cli
 
 all: build
 
@@ -7,6 +7,12 @@ demo:
 
 cli:
 	python3 cli/hams_cli.py cluster status
+
+benchmark:
+	python3 scripts/benchmark_concurrency.py 100
+
+chaos:
+	python3 scripts/chaos_simulation.py
 
 build:
 	docker compose build
@@ -37,17 +43,17 @@ health:
 	@curl -s http://localhost:8086/health | jq . || echo "monitoring down"
 	@curl -s http://localhost:8087/health | jq . || echo "scheduler down"
 
-test: test-cpp test-python
+test:
+	./scripts/run-tests.sh
 
 test-cpp:
-	@echo "Running C++ Unit Tests..."
-	@mkdir -p services/data-ingestion/build && cd services/data-ingestion/build && cmake .. && make -j$$(nproc 2>/dev/null || sysctl -n hw.ncpu) && ctest --output-on-failure || true
-	@mkdir -p services/preprocessing/build && cd services/preprocessing/build && cmake .. && make -j$$(nproc 2>/dev/null || sysctl -n hw.ncpu) && ctest --output-on-failure || true
-	@mkdir -p services/storage-manager/build && cd services/storage-manager/build && cmake .. && make -j$$(nproc 2>/dev/null || sysctl -n hw.ncpu) && ctest --output-on-failure || true
+	./scripts/run_cpp_tests_native.sh
 
 test-python:
-	@echo "Running Python Unit Tests..."
-	python3 -m pytest scheduler/tests services/api-gateway/tests services/training-orchestrator/tests services/model-manager/tests services/monitoring/tests -v
+	python3 -m pytest scheduler/tests services/api-gateway/tests services/training-orchestrator/tests services/model-manager/tests services/monitoring/tests tests/integration/ -v
+
+test-integration:
+	python3 -m pytest tests/integration/test_end_to_end_pipeline.py -v
 
 lint:
 	@echo "Checking formatting..."

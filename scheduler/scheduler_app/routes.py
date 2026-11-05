@@ -19,7 +19,7 @@ workload_sched = WorkloadScheduler(node_mgr)
 fail_detector = FailureDetector(node_mgr, workload_sched)
 
 class WorkloadSubmitRequest(BaseModel):
-    name: str = Field(..., example="distributed-transformer-fine-tuning")
+    name: str = Field(..., examples=["distributed-transformer-fine-tuning"])
     required_cpu: float = Field(4.0, ge=0.5)
     required_memory: float = Field(16.0, ge=1.0)
     required_gpu: int = Field(0, ge=0)
@@ -30,7 +30,7 @@ class WorkloadSubmitRequest(BaseModel):
     algorithm: Optional[SchedulingAlgorithm] = None
 
 class SimulateFailureRequest(BaseModel):
-    node_id: str = Field(..., example="node-005")
+    node_id: str = Field(..., examples=["node-005"])
 
 @router.post("/workloads", status_code=status.HTTP_201_CREATED)
 async def submit_workload(req: WorkloadSubmitRequest):

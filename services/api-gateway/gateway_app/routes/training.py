@@ -10,8 +10,8 @@ except ImportError:
 router = APIRouter(prefix="/api/v1/training", tags=["AI Training"])
 
 class TrainingJobSubmit(BaseModel):
-    model_type: str = Field(..., example="transformer-llm-7b")
-    dataset_id: str = Field(..., example="ds-corpus-clean-v2")
+    model_type: str = Field(..., examples=["transformer-llm-7b"])
+    dataset_id: str = Field(..., examples=["ds-corpus-clean-v2"])
     hyperparameters: Dict[str, Any] = Field(default_factory=dict)
     priority: int = Field(5, ge=1, le=10)
     required_gpu: int = Field(1, ge=0)

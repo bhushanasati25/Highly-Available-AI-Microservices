@@ -10,9 +10,9 @@ except ImportError:
 router = APIRouter(prefix="/api/v1/models", tags=["Model Registry"])
 
 class ModelRegisterRequest(BaseModel):
-    name: str = Field(..., example="fraud-detection-xgb")
+    name: str = Field(..., examples=["fraud-detection-xgb"])
     description: Optional[str] = "Gradient boosting classifier for fraud detection"
-    framework: str = Field("xgboost", example="xgboost")
+    framework: str = Field("xgboost", examples=["xgboost"])
     tags: Dict[str, str] = Field(default_factory=dict)
 
 class ModelMetadata(BaseModel):
@@ -25,8 +25,8 @@ class ModelMetadata(BaseModel):
     created_at: float
 
 class ModelDeployRequest(BaseModel):
-    version: str = Field("v1.0.0", example="v1.0.0")
-    target_environment: str = Field("staging", example="production")
+    version: str = Field("v1.0.0", examples=["v1.0.0"])
+    target_environment: str = Field("staging", examples=["production"])
 
 @router.post("", response_model=ModelMetadata, status_code=status.HTTP_201_CREATED)
 async def register_model(model: ModelRegisterRequest):

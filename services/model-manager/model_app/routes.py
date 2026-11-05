@@ -9,22 +9,22 @@ except ImportError:
 router = APIRouter(tags=["Model Management"])
 
 class CreateModelRequest(BaseModel):
-    name: str = Field(..., example="bert-sentiment-classifier")
-    framework: str = Field("pytorch", example="pytorch")
-    description: str = Field("", example="Fine-tuned BERT model for multi-class sentiment analysis")
+    name: str = Field(..., examples=["bert-sentiment-classifier"])
+    framework: str = Field("pytorch", examples=["pytorch"])
+    description: str = Field("", examples=["Fine-tuned BERT model for multi-class sentiment analysis"])
     tags: Dict[str, str] = Field(default_factory=dict)
     dataset_id: Optional[str] = None
     job_id: Optional[str] = None
 
 class CreateVersionRequest(BaseModel):
-    version_id: str = Field(..., example="v1.1.0")
+    version_id: str = Field(..., examples=["v1.1.0"])
     artifact_content_b64: Optional[str] = None
     metrics: Dict[str, float] = Field(default_factory=dict)
-    changelog: str = Field("", example="Improved validation accuracy with learning rate warmup")
+    changelog: str = Field("", examples=["Improved validation accuracy with learning rate warmup"])
 
 class DeployRequest(BaseModel):
-    version: str = Field("v1.0.0", example="v1.0.0")
-    target_environment: str = Field("production", example="production")
+    version: str = Field("v1.0.0", examples=["v1.0.0"])
+    target_environment: str = Field("production", examples=["production"])
 
 @router.post("/models", status_code=status.HTTP_201_CREATED)
 async def register_model(req: CreateModelRequest):

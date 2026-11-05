@@ -9,8 +9,8 @@ except ImportError:
 router = APIRouter(tags=["Training Orchestration"])
 
 class JobSubmitRequest(BaseModel):
-    model_type: str = Field(..., example="resnet50")
-    dataset_id: str = Field(..., example="imagenet-mini")
+    model_type: str = Field(..., examples=["resnet50"])
+    dataset_id: str = Field(..., examples=["imagenet-mini"])
     hyperparameters: Dict[str, Any] = Field(default_factory=dict)
     priority: int = Field(5, ge=1, le=10)
     required_gpu: int = Field(1, ge=0)

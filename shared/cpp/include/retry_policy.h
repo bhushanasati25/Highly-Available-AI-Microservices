@@ -9,7 +9,7 @@
  * exponentially increasing delay that is capped and jittered.
  *
  * Usage:
- *   hams::RetryPolicy policy(/*max_retries=*/5);
+ *   hams::RetryPolicy policy(5); // 5 max retries
  *   auto result = policy.execute([&]() { return unreliable_rpc(); });
  *
  * You can subclass and override shouldRetry() to limit retries to specific

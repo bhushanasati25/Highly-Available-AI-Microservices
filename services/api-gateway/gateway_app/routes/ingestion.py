@@ -13,8 +13,8 @@ except ImportError:
 router = APIRouter(prefix="/api/v1/ingest", tags=["Data Ingestion"])
 
 class IngestJobRequest(BaseModel):
-    source_id: str = Field(..., example="s3://ai-data-lake/raw/train_set_v1.csv")
-    format: str = Field("CSV", example="CSV")
+    source_id: str = Field(..., examples=["s3://ai-data-lake/raw/train_set_v1.csv"])
+    format: str = Field("CSV", examples=["CSV"])
     metadata: Dict[str, str] = Field(default_factory=dict)
     schema_id: Optional[str] = None
     data_payload: Optional[str] = None
