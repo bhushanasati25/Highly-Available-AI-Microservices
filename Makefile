@@ -1,4 +1,4 @@
-.PHONY: all build up down logs restart clean test test-cpp test-python test-integration benchmark chaos profile lint proto health status demo cli dashboard data deploy-aks
+.PHONY: all build up down logs restart clean test test-cpp test-python test-integration benchmark chaos profile lint proto health health-probes status demo cli cli-dlq dashboard data deploy-aks
 
 all: build
 
@@ -7,6 +7,9 @@ demo:
 
 cli:
 	python3 cli/hams_cli.py cluster status
+
+cli-dlq:
+	python3 cli/hams_cli.py dlq list
 
 benchmark:
 	python3 scripts/benchmark_concurrency.py 100
@@ -47,14 +50,11 @@ status:
 
 health:
 	@echo "Checking services health..."
-	@curl -s http://localhost:8080/health | jq . || echo "api-gateway down"
-	@curl -s http://localhost:8081/health | jq . || echo "data-ingestion down"
-	@curl -s http://localhost:8082/health | jq . || echo "preprocessing down"
-	@curl -s http://localhost:8083/health | jq . || echo "storage-manager down"
-	@curl -s http://localhost:8084/health | jq . || echo "training-orchestrator down"
-	@curl -s http://localhost:8085/health | jq . || echo "model-manager down"
-	@curl -s http://localhost:8086/health | jq . || echo "monitoring down"
-	@curl -s http://localhost:8087/health | jq . || echo "scheduler down"
+	@./scripts/health-check.sh localhost
+
+health-probes:
+	@echo "Checking 3-tier Kubernetes probes (/healthz, /readyz, /startupz)..."
+	@./scripts/health-check.sh localhost --probes
 
 test:
 	./scripts/run-tests.sh
