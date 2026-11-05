@@ -1,5 +1,6 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Depends
+from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from prometheus_client import make_asgi_app
 import structlog
@@ -70,6 +71,16 @@ app.mount("/metrics", metrics_app)
 async def obtain_token(username: str = "admin"):
     token = create_access_token({"sub": username, "roles": ["admin", "developer"]})
     return {"access_token": token, "token_type": "bearer"}
+
+# Live Operations Mission Control Dashboard
+DASHBOARD_FILE = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../web/index.html"))
+
+@app.get("/dashboard", response_class=HTMLResponse, tags=["Dashboard"])
+async def dashboard_view():
+    if os.path.exists(DASHBOARD_FILE):
+        with open(DASHBOARD_FILE, "r") as f:
+            return HTMLResponse(content=f.read())
+    return HTMLResponse(content="<h1>Operations Dashboard</h1><p>web/index.html not found</p>")
 
 # Service Routes
 app.include_router(ingestion.router)

@@ -1,0 +1,45 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hams-microservices
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: hams-microservices
+    app.kubernetes.io/part-of: highly-available-ai-microservices
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/hams-ai/hams-microservices.git
+    targetRevision: HEAD
+    path: infra/helm/hams
+    helm:
+      releaseName: hams
+      valueFiles:
+        - values.yaml
+      parameters:
+        - name: global.environment
+          value: production
+        - name: apiGateway.replicaCount
+          value: "3"
+        - name: trainingOrchestrator.replicaCount
+          value: "2"
+        - name: scheduler.replicaCount
+          value: "2"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: hams-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ApplyOutOfSyncOnly=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m

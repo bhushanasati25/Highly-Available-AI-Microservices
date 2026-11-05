@@ -1,4 +1,4 @@
-.PHONY: all build up down logs restart clean test test-cpp test-python test-integration benchmark chaos lint proto health status demo cli
+.PHONY: all build up down logs restart clean test test-cpp test-python test-integration benchmark chaos lint proto health status demo cli dashboard data deploy-aks
 
 all: build
 
@@ -13,6 +13,16 @@ benchmark:
 
 chaos:
 	python3 scripts/chaos_simulation.py
+
+dashboard:
+	@echo "Opening Operations Mission Control Dashboard..."
+	@open web/index.html 2>/dev/null || xdg-open web/index.html 2>/dev/null || echo "Open web/index.html in your browser or visit http://localhost:8080/dashboard"
+
+data:
+	python3 scripts/generate_ai_dataset.py --rows 1000
+
+deploy-aks:
+	./scripts/deploy_azure_aks.sh
 
 build:
 	docker compose build

@@ -5,10 +5,12 @@ try:
     from .heartbeat import HeartbeatMonitor
     from .health_checker import ServiceHealthMonitor
     from .metrics_collector import metrics_aggregator, ACTIVE_NODES
+    from .drift_detector import drift_detector_instance
 except ImportError:
     from heartbeat import HeartbeatMonitor
     from health_checker import ServiceHealthMonitor
     from metrics_collector import metrics_aggregator, ACTIVE_NODES
+    from drift_detector import drift_detector_instance
 
 router = APIRouter(tags=["Monitoring & Telemetry"])
 
@@ -19,6 +21,11 @@ class HeartbeatPayload(BaseModel):
     cpu_usage: float = Field(0.0, ge=0.0, le=100.0)
     memory_usage: float = Field(0.0, ge=0.0, le=100.0)
     gpu_available: int = Field(0, ge=0)
+
+class DriftAnalysisRequest(BaseModel):
+    feature_name: str = Field(..., examples=["embedding_norm"])
+    baseline: List[float] = Field(..., examples=[[1.0, 1.2, 1.5, 1.8, 2.0]])
+    current: List[float] = Field(..., examples=[[3.0, 3.5, 4.0, 4.5, 5.0]])
 
 @router.get("/status")
 async def cluster_status():
@@ -60,3 +67,21 @@ async def get_alerts():
 @router.get("/summary")
 async def get_metrics_summary():
     return metrics_aggregator.get_summary()
+
+@router.post("/drift")
+async def check_data_drift(req: DriftAnalysisRequest):
+    report = drift_detector_instance.analyze_feature_drift(
+        feature_name=req.feature_name,
+        baseline=req.baseline,
+        current=req.current
+    )
+    return {
+        "feature_name": report.feature_name,
+        "psi_score": report.psi_score,
+        "ks_statistic": report.ks_statistic,
+        "drift_detected": report.drift_detected,
+        "drift_severity": report.drift_severity,
+        "baseline_sample_count": report.baseline_sample_count,
+        "current_sample_count": report.current_sample_count,
+        "details": report.details,
+    }

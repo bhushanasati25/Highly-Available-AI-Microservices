@@ -44,3 +44,12 @@ async def test_ingest_lifecycle():
         status_resp = await client.get(f"/api/v1/ingest/{job_id}")
         assert status_resp.status_code == 200
         assert status_resp.json()["job_id"] == job_id
+
+@pytest.mark.asyncio
+async def test_dashboard_endpoint():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        resp = await client.get("/dashboard")
+        assert resp.status_code == 200
+        assert "Highly Available AI Microservices" in resp.text
+        assert "50-Node Distributed Cluster Topology Map" in resp.text
