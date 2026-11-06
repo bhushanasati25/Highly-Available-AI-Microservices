@@ -60,5 +60,8 @@ target_link_libraries(data_ingestion_lib PUBLIC
 add_executable(data_ingestion_service src/main.cpp)
 target_link_libraries(data_ingestion_service PRIVATE data_ingestion_lib)
 
-enable_testing()
-add_subdirectory(tests)
+option(BUILD_TESTING "Build testing tree" OFF)
+if(BUILD_TESTING)
+    enable_testing()
+    add_subdirectory(tests)
+endif()

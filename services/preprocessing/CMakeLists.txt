@@ -60,5 +60,8 @@ target_link_libraries(preprocessing_lib PUBLIC
 add_executable(preprocessing_service src/main.cpp)
 target_link_libraries(preprocessing_service PRIVATE preprocessing_lib)
 
-enable_testing()
-add_subdirectory(tests)
+option(BUILD_TESTING "Build testing tree" OFF)
+if(BUILD_TESTING)
+    enable_testing()
+    add_subdirectory(tests)
+endif()

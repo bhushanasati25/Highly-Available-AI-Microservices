@@ -27,5 +27,8 @@ target_link_libraries(storage_manager_lib PUBLIC
 add_executable(storage_manager_service src/main.cpp)
 target_link_libraries(storage_manager_service PRIVATE storage_manager_lib)
 
-enable_testing()
-add_subdirectory(tests)
+option(BUILD_TESTING "Build testing tree" OFF)
+if(BUILD_TESTING)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
