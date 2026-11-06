@@ -6,7 +6,33 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Threads REQUIRED)
 find_package(Protobuf REQUIRED)
-find_package(gRPC REQUIRED)
+
+# gRPC: try CMake config first; fall back to pkg-config for Ubuntu 22.04 apt packages
+find_package(gRPC QUIET CONFIG)
+if(NOT TARGET gRPC::grpc++)
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(GRPCPP REQUIRED IMPORTED_TARGET grpc++)
+    add_library(gRPC::grpc++ INTERFACE IMPORTED)
+    target_link_libraries(gRPC::grpc++ INTERFACE PkgConfig::GRPCPP)
+endif()
+
+if(NOT PROTOBUF_PROTOC_EXECUTABLE)
+    if(Protobuf_PROTOC_EXECUTABLE)
+        set(PROTOBUF_PROTOC_EXECUTABLE ${Protobuf_PROTOC_EXECUTABLE})
+    elseif(TARGET protobuf::protoc)
+        set(PROTOBUF_PROTOC_EXECUTABLE $<TARGET_FILE:protobuf::protoc>)
+    else()
+        find_program(PROTOBUF_PROTOC_EXECUTABLE protoc REQUIRED)
+    endif()
+endif()
+
+if(NOT GRPC_CPP_PLUGIN)
+    if(TARGET gRPC::grpc_cpp_plugin)
+        set(GRPC_CPP_PLUGIN $<TARGET_FILE:gRPC::grpc_cpp_plugin>)
+    else()
+        find_program(GRPC_CPP_PLUGIN grpc_cpp_plugin REQUIRED)
+    endif()
+endif()
 
 # Include shared library
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../shared/cpp ${CMAKE_CURRENT_BINARY_DIR}/shared_cpp)
